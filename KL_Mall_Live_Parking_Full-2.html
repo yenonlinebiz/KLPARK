@@ -19,10 +19,12 @@ html{scroll-behavior:smooth}
 .search-input:focus{outline:none;border-color:#3b82f6}
 @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .animate-fade-in{animation:fadeInUp .5s ease-out forwards}
-@keyframes flash{0%{background-color:#dbeafe}100%{background-color:#ffffff}}
+@keyframes flash{0%{background-color:#dbeafe}100%{background-color:transparent}}
 .flash-update{animation:flash 1s ease-out}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 .spinning{animation:spin 1s linear}
+.icon-btn{transition:transform .15s ease-out, box-shadow .15s ease-out}
+.icon-btn:hover{transform:translateY(-1px);box-shadow:0 4px 8px rgba(0,0,0,.08)}
 </style>
 </head>
 <body>
@@ -74,7 +76,11 @@ html{scroll-behavior:smooth}
       <h2 class="text-6xl font-black text-green-400 mt-8" id="total-spots">--</h2>
       <p class="text-2xl font-semibold mt-3">Total Available Spots</p>
       <p class="text-white/60 mt-2">Across 25 malls</p>
-      <p class="text-white/50 text-xs mt-4">Next refresh in <span id="countdown" class="font-mono font-bold text-blue-300">60</span>s</p>
+      <div class="mt-4 px-3 py-2 rounded-lg bg-white/5 border border-white/10">
+        <p class="text-xs text-white/50 uppercase tracking-wider mb-1">Current Status</p>
+        <p class="text-sm font-semibold" id="status-text">Calculating...</p>
+      </div>
+      <p class="text-white/50 text-xs mt-3">Next refresh in <span id="countdown" class="font-mono font-bold text-blue-300">60</span>s</p>
     </div>
   </div>
 </section>
@@ -129,8 +135,9 @@ html{scroll-behavior:smooth}
           <p>
             <strong>Demonstration data only:</strong> The parking availability figures shown on this page are
             <em>simulated for demonstration purposes</em> and do not reflect actual real-time parking conditions
-            at any of the listed shopping malls. Numbers are randomly generated and refresh every 60 seconds for
-            illustrative use only.
+            at any of the listed shopping malls. Numbers are generated client-side using a time-of-day occupancy
+            model that approximates typical mall trading patterns in Kuala Lumpur (closed overnight, busy at
+            lunch and evening peaks) and refresh every 60 seconds. Actual figures will differ.
           </p>
           <p>
             <strong>No affiliation:</strong> This page is not affiliated with, endorsed by, or sponsored by any of
@@ -210,42 +217,108 @@ html{scroll-behavior:smooth}
 
 <script>
 const malls = [
-  { name: "Suria KLCC", available: 412, total: 700, color: "blue", maps: "https://maps.google.com/?q=Suria+KLCC+Kuala+Lumpur" },
-  { name: "Pavilion Kuala Lumpur", available: 198, total: 500, color: "amber", maps: "https://maps.google.com/?q=Pavilion+KL+Kuala+Lumpur" },
-  { name: "Mid Valley Megamall", available: 316, total: 600, color: "emerald", maps: "https://maps.google.com/?q=Mid+Valley+Megamall+Kuala+Lumpur" },
-  { name: "Sunway Velocity Mall", available: 78, total: 400, color: "rose", maps: "https://maps.google.com/?q=Sunway+Velocity+Mall+Kuala+Lumpur" },
-  { name: "1 Utama Shopping Centre", available: 252, total: 700, color: "violet", maps: "https://maps.google.com/?q=1+Utama+Shopping+Centre" },
-  { name: "Sunway Pyramid", available: 384, total: 650, color: "amber", maps: "https://maps.google.com/?q=Sunway+Pyramid+Mall" },
-  { name: "The Exchange TRX", available: 428, total: 700, color: "cyan", maps: "https://maps.google.com/?q=The+Exchange+TRX+Kuala+Lumpur" },
-  { name: "The Gardens Mall", available: 176, total: 450, color: "emerald", maps: "https://maps.google.com/?q=The+Gardens+Mall+Kuala+Lumpur" },
-  { name: "NU Sentral", available: 64, total: 350, color: "slate", maps: "https://maps.google.com/?q=NU+Sentral+Kuala+Lumpur" },
-  { name: "Berjaya Times Square", available: 221, total: 550, color: "pink", maps: "https://maps.google.com/?q=Berjaya+Times+Square+Kuala+Lumpur" },
-  { name: "Lot 10 Bukit Bintang", available: 317, total: 500, color: "lime", maps: "https://maps.google.com/?q=Lot+10+Bukit+Bintang+Kuala+Lumpur" },
-  { name: "IOI City Mall Putrajaya", available: 300, total: 600, color: "sky", maps: "https://maps.google.com/?q=IOI+City+Mall+Putrajaya" },
-  { name: "Mitsui Lalaport BBCC", available: 288, total: 550, color: "rose", maps: "https://maps.google.com/?q=LaLaport+BBCC+Kuala+Lumpur" },
-  { name: "Avenue K", available: 143, total: 350, color: "indigo", maps: "https://maps.google.com/?q=Avenue+K+Kuala+Lumpur" },
-  { name: "Pavilion Bukit Jalil", available: 275, total: 600, color: "orange", maps: "https://maps.google.com/?q=Pavilion+Bukit+Jalil" },
-  { name: "Pavilion Damansara Heights", available: 201, total: 500, color: "teal", maps: "https://maps.google.com/?q=Pavilion+Damansara+Heights" },
-  { name: "KL Gateway Mall", available: 129, total: 350, color: "violet", maps: "https://maps.google.com/?q=KL+Gateway+Mall+Kuala+Lumpur" },
-  { name: "Sunway Putra Mall", available: 244, total: 500, color: "amber", maps: "https://maps.google.com/?q=Sunway+Putra+Mall+Kuala+Lumpur" },
-  { name: "MyTOWN Shopping Centre", available: 266, total: 500, color: "blue", maps: "https://maps.google.com/?q=MyTOWN+Shopping+Centre+Kuala+Lumpur" },
-  { name: "The Curve Mutiara Damansara", available: 156, total: 400, color: "fuchsia", maps: "https://maps.google.com/?q=The+Curve+Mutiara+Damansara" },
-  { name: "IPC Shopping Centre", available: 232, total: 450, color: "emerald", maps: "https://maps.google.com/?q=IPC+Shopping+Centre+Mutiara+Damansara" },
-  { name: "Wangsa Walk Mall", available: 111, total: 350, color: "stone", maps: "https://maps.google.com/?q=Wangsa+Walk+Mall+Kuala+Lumpur" },
-  { name: "Quill City Mall", available: 184, total: 450, color: "cyan", maps: "https://maps.google.com/?q=Quill+City+Mall+Kuala+Lumpur" },
-  { name: "Fahrenheit88", available: 148, total: 350, color: "red", maps: "https://maps.google.com/?q=Fahrenheit88+Bukit+Bintang+Kuala+Lumpur" },
-  { name: "The Starhill", available: 95, total: 300, color: "yellow", maps: "https://maps.google.com/?q=The+Starhill+Bukit+Bintang+Kuala+Lumpur" }
+  { name: "Suria KLCC", total: 700, query: "Suria KLCC Kuala Lumpur" },
+  { name: "Pavilion Kuala Lumpur", total: 500, query: "Pavilion KL Kuala Lumpur" },
+  { name: "Mid Valley Megamall", total: 600, query: "Mid Valley Megamall Kuala Lumpur" },
+  { name: "Sunway Velocity Mall", total: 400, query: "Sunway Velocity Mall Kuala Lumpur" },
+  { name: "1 Utama Shopping Centre", total: 700, query: "1 Utama Shopping Centre" },
+  { name: "Sunway Pyramid", total: 650, query: "Sunway Pyramid Mall" },
+  { name: "The Exchange TRX", total: 700, query: "The Exchange TRX Kuala Lumpur" },
+  { name: "The Gardens Mall", total: 450, query: "The Gardens Mall Kuala Lumpur" },
+  { name: "NU Sentral", total: 350, query: "NU Sentral Kuala Lumpur" },
+  { name: "Berjaya Times Square", total: 550, query: "Berjaya Times Square Kuala Lumpur" },
+  { name: "Lot 10 Bukit Bintang", total: 500, query: "Lot 10 Bukit Bintang Kuala Lumpur" },
+  { name: "IOI City Mall Putrajaya", total: 600, query: "IOI City Mall Putrajaya" },
+  { name: "Mitsui Lalaport BBCC", total: 550, query: "LaLaport BBCC Kuala Lumpur" },
+  { name: "Avenue K", total: 350, query: "Avenue K Kuala Lumpur" },
+  { name: "Pavilion Bukit Jalil", total: 600, query: "Pavilion Bukit Jalil" },
+  { name: "Pavilion Damansara Heights", total: 500, query: "Pavilion Damansara Heights" },
+  { name: "KL Gateway Mall", total: 350, query: "KL Gateway Mall Kuala Lumpur" },
+  { name: "Sunway Putra Mall", total: 500, query: "Sunway Putra Mall Kuala Lumpur" },
+  { name: "MyTOWN Shopping Centre", total: 500, query: "MyTOWN Shopping Centre Kuala Lumpur" },
+  { name: "The Curve Mutiara Damansara", total: 400, query: "The Curve Mutiara Damansara" },
+  { name: "IPC Shopping Centre", total: 450, query: "IPC Shopping Centre Mutiara Damansara" },
+  { name: "Wangsa Walk Mall", total: 350, query: "Wangsa Walk Mall Kuala Lumpur" },
+  { name: "Quill City Mall", total: 450, query: "Quill City Mall Kuala Lumpur" },
+  { name: "Fahrenheit88", total: 350, query: "Fahrenheit88 Bukit Bintang Kuala Lumpur" },
+  { name: "The Starhill", total: 300, query: "The Starhill Bukit Bintang Kuala Lumpur" }
 ];
+
+// Pre-compute deep links for both navigation providers per mall
+malls.forEach(m => {
+  const q = encodeURIComponent(m.query);
+  m.mapsUrl = `https://www.google.com/maps/search/?api=1&query=${q}`;
+  m.wazeUrl = `https://waze.com/ul?q=${q}&navigate=yes`;
+  m.available = 0;
+});
 
 const REFRESH_INTERVAL_SECONDS = 60;
 let countdownSeconds = REFRESH_INTERVAL_SECONDS;
 
+// ---------------------------------------------------------------------------
+// Time-aware availability simulation
+//
+// Real shopping mall parking varies hugely by hour of day. The previous
+// implementation just random-walked the numbers, which kept lots looking busy
+// even at 3 AM when malls are closed. This profile expresses an estimated
+// "fill ratio" (1 - availability%) for each hour in Malaysia time. The lower
+// the fill ratio, the more empty spots are available.
+// ---------------------------------------------------------------------------
+function getMalaysiaHours() {
+  const now = new Date();
+  const utcMs = now.getTime() + (now.getTimezoneOffset() * 60000);
+  const kl = new Date(utcMs + 8 * 3600000);
+  return kl.getHours() + kl.getMinutes() / 60;
+}
+
+function getStatusForHour(h) {
+  // Returns { fillTarget, label, tone }
+  // fillTarget = expected fraction of total spots that are TAKEN
+  if (h < 8.5)  return { fillTarget: 0.03, label: 'Closed (overnight) — lots are empty',          tone: 'text-green-400' };
+  if (h < 10)   return { fillTarget: 0.15, label: 'Most malls opening — lots mostly empty',       tone: 'text-green-400' };
+  if (h < 12)   return { fillTarget: 0.40, label: 'Morning shopping — moderate occupancy',        tone: 'text-yellow-300' };
+  if (h < 14)   return { fillTarget: 0.75, label: 'Lunch peak — busy',                            tone: 'text-orange-300' };
+  if (h < 17)   return { fillTarget: 0.55, label: 'Afternoon — moderate occupancy',               tone: 'text-yellow-300' };
+  if (h < 21)   return { fillTarget: 0.85, label: 'Evening peak — very busy',                     tone: 'text-red-300' };
+  if (h < 22)   return { fillTarget: 0.50, label: 'Wind-down — emptying out',                     tone: 'text-yellow-300' };
+  if (h < 22.5) return { fillTarget: 0.20, label: 'Closing time — lots draining quickly',         tone: 'text-green-300' };
+  return         { fillTarget: 0.04, label: 'Closed (after hours) — lots are empty',              tone: 'text-green-400' };
+}
+
+function recalculateAvailability() {
+  const h = getMalaysiaHours();
+  const status = getStatusForHour(h);
+  malls.forEach(mall => {
+    // Per-mall noise: ±10 percentage points so cards differ but stay realistic
+    const noise = (Math.random() - 0.5) * 0.20;
+    const fill = Math.max(0.0, Math.min(1.0, status.fillTarget + noise));
+    mall.available = Math.max(0, Math.round(mall.total * (1 - fill)));
+  });
+  return status;
+}
+
 function getLevel(available, total) {
   const pct = (available / total) * 100;
-  if (pct >= 50) return { label: "High", bg: "bg-green-100", text: "text-green-700", num: "text-green-600", bar: "bg-green-500" };
+  if (pct >= 50) return { label: "High",   bg: "bg-green-100",  text: "text-green-700",  num: "text-green-600",  bar: "bg-green-500" };
   if (pct >= 25) return { label: "Medium", bg: "bg-yellow-100", text: "text-yellow-700", num: "text-yellow-600", bar: "bg-yellow-500" };
-  return { label: "Low", bg: "bg-red-100", text: "text-red-700", num: "text-red-600", bar: "bg-red-500" };
+  return            { label: "Low",    bg: "bg-red-100",    text: "text-red-700",    num: "text-red-600",    bar: "bg-red-500" };
 }
+
+// Inline SVG icons for the navigation providers
+const GOOGLE_MAPS_ICON = `
+  <svg viewBox="0 0 24 24" class="w-4 h-4" aria-hidden="true">
+    <path fill="#EA4335" d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8z"/>
+    <circle cx="12" cy="10" r="3" fill="#fff"/>
+  </svg>`;
+
+const WAZE_ICON = `
+  <svg viewBox="0 0 24 24" class="w-4 h-4" aria-hidden="true">
+    <circle cx="12" cy="12" r="10" fill="#33CCFF"/>
+    <circle cx="9" cy="11" r="1.2" fill="#fff"/>
+    <circle cx="15" cy="11" r="1.2" fill="#fff"/>
+    <path d="M8 14c1 1.5 2.5 2 4 2s3-.5 4-2" stroke="#fff" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+    <path d="M10 18l-1 2M14 18l1 2" stroke="#33CCFF" stroke-width="2" stroke-linecap="round"/>
+  </svg>`;
 
 function renderMalls(mallList) {
   const grid = document.getElementById('mall-grid');
@@ -280,14 +353,27 @@ function renderMalls(mallList) {
         <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
           <div class="h-full ${level.bar} rounded-full transition-all duration-700" style="width:${pct}%"></div>
         </div>
-        <div class="flex items-center justify-between mt-4">
+        <div class="flex items-center justify-between mt-5 pt-4 border-t border-gray-100">
           <p class="text-gray-400 text-xs flex items-center gap-1.5">
             <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
             Live
           </p>
-          <a href="${mall.maps}" target="_blank" rel="noopener noreferrer" class="text-blue-600 text-xs font-semibold hover:underline">
-            Directions &rarr;
-          </a>
+          <div class="flex gap-2">
+            <a href="${mall.mapsUrl}" target="_blank" rel="noopener noreferrer"
+               title="Open in Google Maps"
+               aria-label="Open ${mall.name} in Google Maps"
+               class="icon-btn flex items-center gap-1.5 bg-red-50 hover:bg-red-100 text-red-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold">
+              ${GOOGLE_MAPS_ICON}
+              <span>Maps</span>
+            </a>
+            <a href="${mall.wazeUrl}" target="_blank" rel="noopener noreferrer"
+               title="Navigate with Waze"
+               aria-label="Navigate to ${mall.name} with Waze"
+               class="icon-btn flex items-center gap-1.5 bg-cyan-50 hover:bg-cyan-100 text-cyan-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold">
+              ${WAZE_ICON}
+              <span>Waze</span>
+            </a>
+          </div>
         </div>
       </div>
     `;
@@ -296,14 +382,14 @@ function renderMalls(mallList) {
 }
 
 function updateTimestamp() {
-  const now = new Date();
-  const formatted = now.toLocaleString('en-MY', {
+  const formatted = new Date().toLocaleString('en-MY', {
+    timeZone: 'Asia/Kuala_Lumpur',
     day: 'numeric', month: 'short', year: 'numeric',
     hour: '2-digit', minute: '2-digit', second: '2-digit',
     hour12: true
   });
   const el = document.getElementById('last-updated');
-  if (el) el.textContent = formatted;
+  if (el) el.textContent = formatted + ' (KL time)';
 }
 
 function updateTotalSpots() {
@@ -317,11 +403,15 @@ function updateTotalSpots() {
   }
 }
 
+function updateStatusBanner(status) {
+  const el = document.getElementById('status-text');
+  if (!el) return;
+  el.textContent = status.label;
+  el.className = 'text-sm font-semibold ' + status.tone;
+}
+
 function refreshData(triggeredManually) {
-  malls.forEach(mall => {
-    const variation = Math.floor(Math.random() * 50) - 25;
-    mall.available = Math.max(0, Math.min(mall.total, mall.available + variation));
-  });
+  const status = recalculateAvailability();
 
   const searchValue = document.getElementById('search-input').value.toLowerCase();
   const list = searchValue
@@ -331,12 +421,15 @@ function refreshData(triggeredManually) {
   renderMalls(list);
   updateTimestamp();
   updateTotalSpots();
+  updateStatusBanner(status);
   generateAlerts();
 
   if (triggeredManually) {
     const icon = document.getElementById('refresh-icon');
-    icon.classList.add('spinning');
-    setTimeout(() => icon.classList.remove('spinning'), 1000);
+    if (icon) {
+      icon.classList.add('spinning');
+      setTimeout(() => icon.classList.remove('spinning'), 1000);
+    }
   }
 
   countdownSeconds = REFRESH_INTERVAL_SECONDS;
@@ -357,11 +450,16 @@ function generateAlerts() {
   if (!feed) return;
   feed.innerHTML = '';
 
+  // Sort: critical (low) first, then medium, then high — within each group shuffle
   const ranked = [...malls].map(m => ({
     mall: m,
-    pct: m.available / m.total,
-    priority: (m.available / m.total < 0.25) ? 0 : (m.available / m.total < 0.5) ? 1 : 2
-  })).sort((a, b) => a.priority - b.priority || Math.random() - 0.5).slice(0, 8);
+    pct: m.available / m.total
+  })).sort((a, b) => {
+    const pa = a.pct < 0.25 ? 0 : a.pct < 0.5 ? 1 : 2;
+    const pb = b.pct < 0.25 ? 0 : b.pct < 0.5 ? 1 : 2;
+    if (pa !== pb) return pa - pb;
+    return Math.random() - 0.5;
+  }).slice(0, 8);
 
   ranked.forEach((entry, idx) => {
     const m = entry.mall;
@@ -405,11 +503,8 @@ function tickCountdown() {
   }
 }
 
-renderMalls(malls);
-updateTimestamp();
-updateTotalSpots();
-generateAlerts();
-
+// Initial load
+refreshData(false);
 setInterval(tickCountdown, 1000);
 </script>
 
