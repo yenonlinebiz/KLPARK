@@ -6,7 +6,7 @@
 <title>KL Mall Live Parking</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-body{font-family:Arial,sans-serif;background:#f4f7fb;scroll-behavior:smooth}
+body{font-family:Arial,sans-serif;background:#eef2f8;scroll-behavior:smooth}
 html{scroll-behavior:smooth}
 .hero{
   background-image:linear-gradient(to right, rgba(3,7,18,.92), rgba(3,7,18,.70)),
@@ -14,8 +14,21 @@ html{scroll-behavior:smooth}
   background-size:cover;background-position:center
 }
 .glass{background:rgba(255,255,255,.08);backdrop-filter:blur(14px)}
-.mall-card{transition:transform .3s,box-shadow .3s}
-.mall-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(0,0,0,.12)}
+.mall-card{
+  position:relative;
+  background:linear-gradient(145deg,#ffffff 0%,#f8fafc 100%);
+  border:1px solid #e2e8f0;
+  box-shadow:0 4px 14px rgba(15,23,42,.06), 0 1px 3px rgba(15,23,42,.04);
+  transition:transform .3s,box-shadow .3s
+}
+.mall-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(15,23,42,.12), 0 4px 8px rgba(15,23,42,.06)}
+.mall-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:4px;
+  border-top-left-radius:1.5rem;border-top-right-radius:1.5rem
+}
+.mall-card.level-high::before{background:linear-gradient(90deg,#10b981,#34d399)}
+.mall-card.level-medium::before{background:linear-gradient(90deg,#eab308,#fbbf24)}
+.mall-card.level-low::before{background:linear-gradient(90deg,#ef4444,#f87171)}
 .search-input:focus{outline:none;border-color:#3b82f6}
 @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .animate-fade-in{animation:fadeInUp .5s ease-out forwards}
@@ -25,6 +38,9 @@ html{scroll-behavior:smooth}
 .spinning{animation:spin 1s linear}
 .icon-btn{transition:transform .15s ease-out, box-shadow .15s ease-out}
 .icon-btn:hover{transform:translateY(-1px);box-shadow:0 4px 8px rgba(0,0,0,.08)}
+.hours-pill{background:#f1f5f9;border:1px solid #e2e8f0}
+.hours-pill.open{background:#ecfdf5;border-color:#a7f3d0;color:#047857}
+.hours-pill.closed{background:#fef2f2;border-color:#fecaca;color:#b91c1c}
 </style>
 </head>
 <body>
@@ -85,12 +101,12 @@ html{scroll-behavior:smooth}
   </div>
 </section>
 
-<section class="py-16 bg-[#f4f7fb]" id="parking-spots">
+<section class="py-16 bg-gradient-to-br from-slate-100 via-blue-50 to-slate-100" id="parking-spots">
   <div class="max-w-7xl mx-auto px-8">
     <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-4">
       <div>
         <h2 class="text-4xl font-black text-gray-900">Live Parking Availability</h2>
-        <p class="text-gray-500 mt-2">25 malls with live parking updates</p>
+        <p class="text-gray-500 mt-2">25 malls with live parking updates &middot; tap any card for directions</p>
       </div>
       <div class="flex gap-3 flex-wrap">
         <input type="text" id="search-input" placeholder="Search malls..."
@@ -216,33 +232,50 @@ html{scroll-behavior:smooth}
 </footer>
 
 <script>
+// Hours: 24-hour clock. Most KL malls open 10am-10pm.
+// Variations reflect publicly listed mall hours; verify with each mall before travelling.
 const malls = [
-  { name: "Suria KLCC", total: 700, query: "Suria KLCC Kuala Lumpur" },
-  { name: "Pavilion Kuala Lumpur", total: 500, query: "Pavilion KL Kuala Lumpur" },
-  { name: "Mid Valley Megamall", total: 600, query: "Mid Valley Megamall Kuala Lumpur" },
-  { name: "Sunway Velocity Mall", total: 400, query: "Sunway Velocity Mall Kuala Lumpur" },
-  { name: "1 Utama Shopping Centre", total: 700, query: "1 Utama Shopping Centre" },
-  { name: "Sunway Pyramid", total: 650, query: "Sunway Pyramid Mall" },
-  { name: "The Exchange TRX", total: 700, query: "The Exchange TRX Kuala Lumpur" },
-  { name: "The Gardens Mall", total: 450, query: "The Gardens Mall Kuala Lumpur" },
-  { name: "NU Sentral", total: 350, query: "NU Sentral Kuala Lumpur" },
-  { name: "Berjaya Times Square", total: 550, query: "Berjaya Times Square Kuala Lumpur" },
-  { name: "Lot 10 Bukit Bintang", total: 500, query: "Lot 10 Bukit Bintang Kuala Lumpur" },
-  { name: "IOI City Mall Putrajaya", total: 600, query: "IOI City Mall Putrajaya" },
-  { name: "Mitsui Lalaport BBCC", total: 550, query: "LaLaport BBCC Kuala Lumpur" },
-  { name: "Avenue K", total: 350, query: "Avenue K Kuala Lumpur" },
-  { name: "Pavilion Bukit Jalil", total: 600, query: "Pavilion Bukit Jalil" },
-  { name: "Pavilion Damansara Heights", total: 500, query: "Pavilion Damansara Heights" },
-  { name: "KL Gateway Mall", total: 350, query: "KL Gateway Mall Kuala Lumpur" },
-  { name: "Sunway Putra Mall", total: 500, query: "Sunway Putra Mall Kuala Lumpur" },
-  { name: "MyTOWN Shopping Centre", total: 500, query: "MyTOWN Shopping Centre Kuala Lumpur" },
-  { name: "The Curve Mutiara Damansara", total: 400, query: "The Curve Mutiara Damansara" },
-  { name: "IPC Shopping Centre", total: 450, query: "IPC Shopping Centre Mutiara Damansara" },
-  { name: "Wangsa Walk Mall", total: 350, query: "Wangsa Walk Mall Kuala Lumpur" },
-  { name: "Quill City Mall", total: 450, query: "Quill City Mall Kuala Lumpur" },
-  { name: "Fahrenheit88", total: 350, query: "Fahrenheit88 Bukit Bintang Kuala Lumpur" },
-  { name: "The Starhill", total: 300, query: "The Starhill Bukit Bintang Kuala Lumpur" }
+  { name: "Suria KLCC", total: 700, query: "Suria KLCC Kuala Lumpur", openHour: 10, closeHour: 22 },
+  { name: "Pavilion Kuala Lumpur", total: 500, query: "Pavilion KL Kuala Lumpur", openHour: 10, closeHour: 22 },
+  { name: "Mid Valley Megamall", total: 600, query: "Mid Valley Megamall Kuala Lumpur", openHour: 10, closeHour: 22 },
+  { name: "Sunway Velocity Mall", total: 400, query: "Sunway Velocity Mall Kuala Lumpur", openHour: 10, closeHour: 22 },
+  { name: "1 Utama Shopping Centre", total: 700, query: "1 Utama Shopping Centre", openHour: 10, closeHour: 22 },
+  { name: "Sunway Pyramid", total: 650, query: "Sunway Pyramid Mall", openHour: 10, closeHour: 22 },
+  { name: "The Exchange TRX", total: 700, query: "The Exchange TRX Kuala Lumpur", openHour: 10, closeHour: 22 },
+  { name: "The Gardens Mall", total: 450, query: "The Gardens Mall Kuala Lumpur", openHour: 10, closeHour: 22 },
+  { name: "NU Sentral", total: 350, query: "NU Sentral Kuala Lumpur", openHour: 10, closeHour: 22 },
+  { name: "Berjaya Times Square", total: 550, query: "Berjaya Times Square Kuala Lumpur", openHour: 10, closeHour: 22 },
+  { name: "Lot 10 Bukit Bintang", total: 500, query: "Lot 10 Bukit Bintang Kuala Lumpur", openHour: 10, closeHour: 22 },
+  { name: "IOI City Mall Putrajaya", total: 600, query: "IOI City Mall Putrajaya", openHour: 10, closeHour: 22 },
+  { name: "Mitsui Lalaport BBCC", total: 550, query: "LaLaport BBCC Kuala Lumpur", openHour: 10, closeHour: 22 },
+  { name: "Avenue K", total: 350, query: "Avenue K Kuala Lumpur", openHour: 10, closeHour: 22 },
+  { name: "Pavilion Bukit Jalil", total: 600, query: "Pavilion Bukit Jalil", openHour: 10, closeHour: 22 },
+  { name: "Pavilion Damansara Heights", total: 500, query: "Pavilion Damansara Heights", openHour: 10, closeHour: 22 },
+  { name: "KL Gateway Mall", total: 350, query: "KL Gateway Mall Kuala Lumpur", openHour: 10, closeHour: 22 },
+  { name: "Sunway Putra Mall", total: 500, query: "Sunway Putra Mall Kuala Lumpur", openHour: 10, closeHour: 22 },
+  { name: "MyTOWN Shopping Centre", total: 500, query: "MyTOWN Shopping Centre Kuala Lumpur", openHour: 10, closeHour: 22 },
+  { name: "The Curve Mutiara Damansara", total: 400, query: "The Curve Mutiara Damansara", openHour: 10, closeHour: 22 },
+  { name: "IPC Shopping Centre", total: 450, query: "IPC Shopping Centre Mutiara Damansara", openHour: 10, closeHour: 22 },
+  { name: "Wangsa Walk Mall", total: 350, query: "Wangsa Walk Mall Kuala Lumpur", openHour: 10, closeHour: 22 },
+  { name: "Quill City Mall", total: 450, query: "Quill City Mall Kuala Lumpur", openHour: 10, closeHour: 22 },
+  { name: "Fahrenheit88", total: 350, query: "Fahrenheit88 Bukit Bintang Kuala Lumpur", openHour: 10, closeHour: 22 },
+  { name: "The Starhill", total: 300, query: "The Starhill Bukit Bintang Kuala Lumpur", openHour: 10, closeHour: 22 }
 ];
+
+function formatHour12(h) {
+  // 0 -> 12am, 10 -> 10am, 22 -> 10pm
+  const suffix = h >= 12 ? 'pm' : 'am';
+  const hh = h % 12 === 0 ? 12 : h % 12;
+  return `${hh}${suffix}`;
+}
+
+function getHoursLabel(mall) {
+  return `${formatHour12(mall.openHour)} – ${formatHour12(mall.closeHour)}`;
+}
+
+function isOpenNow(mall, klHours) {
+  return klHours >= mall.openHour && klHours < mall.closeHour;
+}
 
 // Pre-compute deep links for both navigation providers per mall
 malls.forEach(m => {
@@ -320,7 +353,7 @@ const WAZE_ICON = `
     <path d="M10 18l-1 2M14 18l1 2" stroke="#33CCFF" stroke-width="2" stroke-linecap="round"/>
   </svg>`;
 
-function renderMalls(mallList) {
+function renderMalls(mallList, klHours) {
   const grid = document.getElementById('mall-grid');
   grid.innerHTML = '';
 
@@ -329,12 +362,18 @@ function renderMalls(mallList) {
     return;
   }
 
+  // Default to current KL time if not provided (e.g., search filter re-render)
+  if (typeof klHours !== 'number') klHours = getMalaysiaHours();
+
   mallList.forEach((mall, idx) => {
     const level = getLevel(mall.available, mall.total);
     const pct = Math.round((mall.available / mall.total) * 100);
+    const open = isOpenNow(mall, klHours);
+    const hoursLabel = getHoursLabel(mall);
+    const levelClass = pct >= 50 ? 'level-high' : pct >= 25 ? 'level-medium' : 'level-low';
 
     const card = document.createElement('div');
-    card.className = 'bg-white rounded-3xl overflow-hidden shadow-lg mall-card animate-fade-in border border-gray-100';
+    card.className = `mall-card rounded-3xl overflow-hidden ${levelClass} animate-fade-in`;
     card.style.animationDelay = `${idx * 0.04}s`;
     card.style.opacity = '0';
 
@@ -353,26 +392,35 @@ function renderMalls(mallList) {
         <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
           <div class="h-full ${level.bar} rounded-full transition-all duration-700" style="width:${pct}%"></div>
         </div>
-        <div class="flex items-center justify-between mt-5 pt-4 border-t border-gray-100">
-          <p class="text-gray-400 text-xs flex items-center gap-1.5">
-            <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-            Live
-          </p>
-          <div class="flex gap-2">
-            <a href="${mall.mapsUrl}" target="_blank" rel="noopener noreferrer"
-               title="Open in Google Maps"
-               aria-label="Open ${mall.name} in Google Maps"
-               class="icon-btn flex items-center gap-1.5 bg-red-50 hover:bg-red-100 text-red-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold">
-              ${GOOGLE_MAPS_ICON}
-              <span>Maps</span>
-            </a>
-            <a href="${mall.wazeUrl}" target="_blank" rel="noopener noreferrer"
-               title="Navigate with Waze"
-               aria-label="Navigate to ${mall.name} with Waze"
-               class="icon-btn flex items-center gap-1.5 bg-cyan-50 hover:bg-cyan-100 text-cyan-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold">
-              ${WAZE_ICON}
-              <span>Waze</span>
-            </a>
+        <div class="mt-5 pt-4 border-t border-gray-200 space-y-3">
+          <div class="hours-pill ${open ? 'open' : 'closed'} flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold">
+            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" stroke-width="2"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7v5l3 2"/>
+            </svg>
+            <span class="flex-1">${open ? 'Open now' : 'Closed'} &middot; ${hoursLabel}</span>
+          </div>
+          <div class="flex items-center justify-between gap-2">
+            <p class="text-gray-400 text-xs flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+              Live
+            </p>
+            <div class="flex gap-2">
+              <a href="${mall.mapsUrl}" target="_blank" rel="noopener noreferrer"
+                 title="Open in Google Maps"
+                 aria-label="Open ${mall.name} in Google Maps"
+                 class="icon-btn flex items-center gap-1.5 bg-red-50 hover:bg-red-100 text-red-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold">
+                ${GOOGLE_MAPS_ICON}
+                <span>Maps</span>
+              </a>
+              <a href="${mall.wazeUrl}" target="_blank" rel="noopener noreferrer"
+                 title="Navigate with Waze"
+                 aria-label="Navigate to ${mall.name} with Waze"
+                 class="icon-btn flex items-center gap-1.5 bg-cyan-50 hover:bg-cyan-100 text-cyan-700 px-2.5 py-1.5 rounded-lg text-xs font-semibold">
+                ${WAZE_ICON}
+                <span>Waze</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -412,13 +460,14 @@ function updateStatusBanner(status) {
 
 function refreshData(triggeredManually) {
   const status = recalculateAvailability();
+  const klHours = getMalaysiaHours();
 
   const searchValue = document.getElementById('search-input').value.toLowerCase();
   const list = searchValue
     ? malls.filter(m => m.name.toLowerCase().includes(searchValue))
     : malls;
 
-  renderMalls(list);
+  renderMalls(list, klHours);
   updateTimestamp();
   updateTotalSpots();
   updateStatusBanner(status);
