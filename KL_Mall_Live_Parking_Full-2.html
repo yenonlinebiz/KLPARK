@@ -16,12 +16,12 @@ html{scroll-behavior:smooth}
 .glass{background:rgba(255,255,255,.08);backdrop-filter:blur(14px)}
 .mall-card{
   position:relative;
-  background:linear-gradient(145deg,#ffffff 0%,#f8fafc 100%);
-  border:1px solid #e2e8f0;
-  box-shadow:0 4px 14px rgba(15,23,42,.06), 0 1px 3px rgba(15,23,42,.04);
+  background:linear-gradient(145deg,#f1f5f9 0%,#e8ecf2 100%);
+  border:1px solid #cbd5e1;
+  box-shadow:0 4px 14px rgba(15,23,42,.08), 0 1px 3px rgba(15,23,42,.05);
   transition:transform .3s,box-shadow .3s
 }
-.mall-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(15,23,42,.12), 0 4px 8px rgba(15,23,42,.06)}
+.mall-card:hover{transform:translateY(-6px);background:linear-gradient(145deg,#f8fafc 0%,#f1f5f9 100%);box-shadow:0 20px 40px rgba(15,23,42,.14), 0 4px 8px rgba(15,23,42,.08)}
 .mall-card::before{
   content:"";position:absolute;top:0;left:0;right:0;height:4px;
   border-top-left-radius:1.5rem;border-top-right-radius:1.5rem
@@ -101,7 +101,7 @@ html{scroll-behavior:smooth}
   </div>
 </section>
 
-<section class="py-16 bg-gradient-to-br from-slate-100 via-blue-50 to-slate-100" id="parking-spots">
+<section class="py-16 bg-white" id="parking-spots">
   <div class="max-w-7xl mx-auto px-8">
     <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-4">
       <div>
