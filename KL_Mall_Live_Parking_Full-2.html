@@ -16,12 +16,12 @@ html{scroll-behavior:smooth}
 .glass{background:rgba(255,255,255,.08);backdrop-filter:blur(14px)}
 .mall-card{
   position:relative;
-  background:#e9edf4;
-  border:1px solid #cbd5e1;
-  box-shadow:0 4px 14px rgba(15,23,42,.08), 0 1px 3px rgba(15,23,42,.05);
+  background:#f1f5f9;
+  border:1px solid #e2e8f0;
+  box-shadow:0 4px 20px rgba(0,0,0,.15), 0 2px 6px rgba(0,0,0,.1);
   transition:transform .3s,box-shadow .3s,background .3s
 }
-.mall-card:hover{transform:translateY(-6px);background:#dfe4ed;box-shadow:0 20px 40px rgba(15,23,42,.14), 0 4px 8px rgba(15,23,42,.08)}
+.mall-card:hover{transform:translateY(-6px);background:#ffffff;box-shadow:0 24px 48px rgba(0,0,0,.25), 0 4px 12px rgba(0,0,0,.15)}
 .mall-card::before{
   content:"";position:absolute;top:0;left:0;right:0;height:4px;
   border-top-left-radius:1.5rem;border-top-right-radius:1.5rem
@@ -101,16 +101,16 @@ html{scroll-behavior:smooth}
   </div>
 </section>
 
-<section class="py-16 bg-white" id="parking-spots">
+<section class="py-16 bg-slate-800" id="parking-spots">
   <div class="max-w-7xl mx-auto px-8">
     <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-4">
       <div>
-        <h2 class="text-4xl font-black text-gray-900">Live Parking Availability</h2>
-        <p class="text-gray-500 mt-2">25 malls with live parking updates &middot; tap any card for directions</p>
+        <h2 class="text-4xl font-black text-white">Live Parking Availability</h2>
+        <p class="text-slate-300 mt-2">25 malls with live parking updates &middot; tap any card for directions</p>
       </div>
       <div class="flex gap-3 flex-wrap">
         <input type="text" id="search-input" placeholder="Search malls..."
-          class="search-input border border-gray-200 px-5 py-3 rounded-2xl text-sm w-56 focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+          class="search-input border border-slate-500 bg-slate-700 text-white placeholder-slate-400 px-5 py-3 rounded-2xl text-sm w-56 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/30">
         <button onclick="manualRefresh()" id="refresh-btn" class="bg-blue-600 text-white px-6 py-3 rounded-2xl font-semibold hover:bg-blue-700 transition flex items-center gap-2">
           <svg id="refresh-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
