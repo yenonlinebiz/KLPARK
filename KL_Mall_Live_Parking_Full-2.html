@@ -9,355 +9,386 @@
 body{font-family:Arial,sans-serif;background:#f4f7fb;scroll-behavior:smooth}
 html{scroll-behavior:smooth}
 .hero{
-background-image:linear-gradient(to right, rgba(3,7,18,.92), rgba(3,7,18,.70)),
-url('https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=1600&q=80');
-background-size:cover;background-position:center}
+  background-image:linear-gradient(to right, rgba(3,7,18,.92), rgba(3,7,18,.70)),
+  url('https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=1600&q=80');
+  background-size:cover;background-position:center
+}
 .glass{background:rgba(255,255,255,.08);backdrop-filter:blur(14px)}
 .mall-card{transition:transform .3s,box-shadow .3s}
 .mall-card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(0,0,0,.12)}
-.mall-card img{transition:transform .4s}
-.mall-card:hover img{transform:scale(1.05)}
-.search-input:focus{outline:none;ring:2px;border-color:#3b82f6}
+.search-input:focus{outline:none;border-color:#3b82f6}
 @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .animate-fade-in{animation:fadeInUp .5s ease-out forwards}
+@keyframes flash{0%{background-color:#dbeafe}100%{background-color:#ffffff}}
+.flash-update{animation:flash 1s ease-out}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.spinning{animation:spin 1s linear}
 </style>
 </head>
 <body>
 
-
 <section class="hero min-h-screen text-white" id="home">
+  <nav class="flex items-center justify-between px-8 py-6 border-b border-white/10">
+    <div class="flex items-center gap-4">
+      <div class="w-14 h-14 rounded-2xl bg-blue-600 flex items-center justify-center text-2xl font-black">P</div>
+      <div>
+        <h1 class="text-xl font-bold">KL Mall</h1>
+        <p class="text-blue-400 text-sm">Live Parking</p>
+      </div>
+    </div>
+    <div class="hidden md:flex gap-8 text-white/80">
+      <a href="#home" class="hover:text-white transition">Home</a>
+      <a href="#parking-spots" class="hover:text-white transition">Parking Spots</a>
+      <a href="#alerts" class="hover:text-white transition">Alerts</a>
+      <a href="#disclaimer" class="hover:text-white transition">Disclaimer</a>
+      <a href="#contact" class="hover:text-white transition">Contact</a>
+    </div>
+    <button onclick="document.getElementById('alerts').scrollIntoView({behavior:'smooth'})" class="bg-blue-600 px-5 py-3 rounded-xl font-semibold hover:bg-blue-700 transition">Alerts</button>
+  </nav>
 
-<nav class="flex items-center justify-between px-8 py-6 border-b border-white/10">
-<div class="flex items-center gap-4">
-<div class="w-14 h-14 rounded-2xl bg-blue-600 flex items-center justify-center text-2xl font-black">P</div>
-<div>
-<h1 class="text-xl font-bold">KL Mall</h1>
-<p class="text-blue-400 text-sm">Live Parking</p>
-</div>
-</div>
+  <div class="max-w-7xl mx-auto px-8 pt-24 pb-20 grid lg:grid-cols-2 gap-16 items-center">
+    <div>
+      <h1 class="text-6xl md:text-7xl font-black leading-tight">
+        KL Mall
+        <span class="block text-blue-500">Live Parking</span>
+      </h1>
+      <p class="mt-8 text-xl text-white/70 max-w-xl">
+        Real-time parking availability across Kuala Lumpur shopping malls.
+      </p>
+      <div class="flex gap-4 mt-10 flex-wrap">
+        <button onclick="document.getElementById('parking-spots').scrollIntoView({behavior:'smooth'})" class="bg-blue-600 px-8 py-4 rounded-2xl font-semibold hover:bg-blue-700 transition">
+          View Parking Spots
+        </button>
+        <button onclick="document.getElementById('alerts').scrollIntoView({behavior:'smooth'})" class="border border-white/20 bg-white/5 px-8 py-4 rounded-2xl font-semibold hover:bg-white/10 transition">
+          View Live Alerts
+        </button>
+      </div>
+    </div>
 
-<div class="hidden md:flex gap-8 text-white/80">
-<a href="#home" class="hover:text-white transition">Home</a>
-<a href="#parking-spots" class="hover:text-white transition">Parking Spots</a>
-<a href="#parking-spots" class="hover:text-white transition">Map</a>
-<a href="#rates" class="hover:text-white transition">Rates</a>
-<a href="#info" class="hover:text-white transition">Info</a>
-<a href="#contact" class="hover:text-white transition">Contact</a>
-</div>
-
-<button onclick="document.getElementById('parking-spots').scrollIntoView({behavior:'smooth'})" class="bg-blue-600 px-5 py-3 rounded-xl font-semibold hover:bg-blue-700 transition">Alerts</button>
-</nav>
-
-<div class="max-w-7xl mx-auto px-8 pt-24 pb-20 grid lg:grid-cols-2 gap-16 items-center">
-
-<div>
-<h1 class="text-6xl md:text-7xl font-black leading-tight">
-KL Mall
-<span class="block text-blue-500">Live Parking</span>
-</h1>
-
-<p class="mt-8 text-xl text-white/70 max-w-xl">
-Real-time parking availability across Kuala Lumpur shopping malls.
-</p>
-
-<div class="flex gap-4 mt-10 flex-wrap">
-<button onclick="document.getElementById('parking-spots').scrollIntoView({behavior:'smooth'})" class="bg-blue-600 px-8 py-4 rounded-2xl font-semibold hover:bg-blue-700 transition">
-View Parking Spots
-</button>
-
-<button onclick="document.getElementById('parking-spots').scrollIntoView({behavior:'smooth'})" class="border border-white/20 bg-white/5 px-8 py-4 rounded-2xl font-semibold hover:bg-white/10 transition">
-View on Map
-</button>
-</div>
-</div>
-
-<div class="glass rounded-3xl border border-white/10 p-8 shadow-2xl max-w-md ml-auto">
-<div class="flex items-center gap-3 mb-5">
-<div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-<p class="text-white/70 font-semibold">Last Updated</p>
-</div>
-
-<p class="text-white/60" id="last-updated">Loading...</p>
-
-<h2 class="text-6xl font-black text-green-400 mt-8" id="total-spots">--</h2>
-
-<p class="text-2xl font-semibold mt-3">Total Available Spots</p>
-
-<p class="text-white/60 mt-2">Across 25 malls</p>
-</div>
-</div>
+    <div class="glass rounded-3xl border border-white/10 p-8 shadow-2xl max-w-md ml-auto">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+        <p class="text-white/70 font-semibold">Last Updated</p>
+      </div>
+      <p class="text-white/60" id="last-updated">Loading...</p>
+      <h2 class="text-6xl font-black text-green-400 mt-8" id="total-spots">--</h2>
+      <p class="text-2xl font-semibold mt-3">Total Available Spots</p>
+      <p class="text-white/60 mt-2">Across 25 malls</p>
+      <p class="text-white/50 text-xs mt-4">Next refresh in <span id="countdown" class="font-mono font-bold text-blue-300">60</span>s</p>
+    </div>
+  </div>
 </section>
-
 
 <section class="py-16 bg-[#f4f7fb]" id="parking-spots">
-<div class="max-w-7xl mx-auto px-8">
-
-<div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-4">
-<div>
-<h2 class="text-4xl font-black text-gray-900">
-Live Parking Availability
-</h2>
-
-<p class="text-gray-500 mt-2">
-25 malls with live parking updates
-</p>
-</div>
-
-<div class="flex gap-3 flex-wrap">
-<input type="text" id="search-input" placeholder="Search malls..." 
-class="search-input border border-gray-200 px-5 py-3 rounded-2xl text-sm w-56 focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
-<button onclick="refreshData()" class="bg-blue-600 text-white px-6 py-3 rounded-2xl font-semibold hover:bg-blue-700 transition flex items-center gap-2">
-<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-Refresh Live Data
-</button>
-</div>
-</div>
-
-<div class="grid md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6" id="mall-grid">
-</div>
-</div>
+  <div class="max-w-7xl mx-auto px-8">
+    <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-10 gap-4">
+      <div>
+        <h2 class="text-4xl font-black text-gray-900">Live Parking Availability</h2>
+        <p class="text-gray-500 mt-2">25 malls with live parking updates</p>
+      </div>
+      <div class="flex gap-3 flex-wrap">
+        <input type="text" id="search-input" placeholder="Search malls..."
+          class="search-input border border-gray-200 px-5 py-3 rounded-2xl text-sm w-56 focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+        <button onclick="manualRefresh()" id="refresh-btn" class="bg-blue-600 text-white px-6 py-3 rounded-2xl font-semibold hover:bg-blue-700 transition flex items-center gap-2">
+          <svg id="refresh-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+          </svg>
+          Refresh Now
+        </button>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="mall-grid"></div>
+  </div>
 </section>
 
-
-<section class="py-16 bg-white" id="rates">
-<div class="max-w-7xl mx-auto px-8">
-<h2 class="text-4xl font-black text-gray-900 mb-4">Parking Rates Guide</h2>
-<p class="text-gray-500 mb-10">Typical parking rates across KL malls (rates may vary)</p>
-
-<div class="grid md:grid-cols-3 gap-8">
-<div class="border border-gray-100 rounded-3xl p-8 hover:shadow-lg transition">
-<div class="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center mb-5">
-<svg class="w-7 h-7 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-</div>
-<h3 class="text-xl font-bold mb-2">First Hour</h3>
-<p class="text-3xl font-black text-green-600">RM 2 - 4</p>
-<p class="text-gray-500 mt-3 text-sm">Most malls charge RM 2-4 for the first hour of parking.</p>
-</div>
-
-<div class="border border-gray-100 rounded-3xl p-8 hover:shadow-lg transition">
-<div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-5">
-<svg class="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-</div>
-<h3 class="text-xl font-bold mb-2">Subsequent Hours</h3>
-<p class="text-3xl font-black text-blue-600">RM 1 - 3</p>
-<p class="text-gray-500 mt-3 text-sm">Per subsequent hour or part thereof after the first hour.</p>
-</div>
-
-<div class="border border-gray-100 rounded-3xl p-8 hover:shadow-lg transition">
-<div class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center mb-5">
-<svg class="w-7 h-7 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-</div>
-<h3 class="text-xl font-bold mb-2">Weekend / Holiday</h3>
-<p class="text-3xl font-black text-purple-600">RM 5 - 8</p>
-<p class="text-gray-500 mt-3 text-sm">Flat rate or capped daily rates on weekends and holidays.</p>
-</div>
-</div>
-</div>
+<section class="py-16 bg-white" id="alerts">
+  <div class="max-w-7xl mx-auto px-8">
+    <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+      <h2 class="text-4xl font-black text-gray-900">Live Parking Alerts</h2>
+      <div class="flex items-center gap-2 bg-green-50 border border-green-200 px-4 py-2 rounded-full">
+        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+        <span class="text-green-700 text-sm font-semibold">LIVE</span>
+      </div>
+    </div>
+    <p class="text-gray-500 mb-8">Real-time notifications on parking status changes &middot; Auto-refreshes every 60 seconds</p>
+    <div class="space-y-4" id="alerts-feed"></div>
+  </div>
 </section>
 
-
-<section class="py-16 bg-[#f4f7fb]" id="info">
-<div class="max-w-7xl mx-auto px-8">
-<h2 class="text-4xl font-black text-gray-900 mb-4">Live Parking Alerts</h2>
-<p class="text-gray-500 mb-8">Real-time notifications on parking status changes</p>
-
-<div class="space-y-4" id="alerts-feed">
-</div>
-</div>
+<section class="py-12 bg-amber-50 border-y border-amber-200" id="disclaimer">
+  <div class="max-w-5xl mx-auto px-8">
+    <div class="flex items-start gap-4">
+      <svg class="w-8 h-8 text-amber-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+      </svg>
+      <div>
+        <h3 class="text-xl font-black text-amber-900 mb-3">Legal Disclaimer & Data Source Notice</h3>
+        <div class="text-amber-900/90 text-sm leading-relaxed space-y-3">
+          <p>
+            <strong>Demonstration data only:</strong> The parking availability figures shown on this page are
+            <em>simulated for demonstration purposes</em> and do not reflect actual real-time parking conditions
+            at any of the listed shopping malls. Numbers are randomly generated and refresh every 60 seconds for
+            illustrative use only.
+          </p>
+          <p>
+            <strong>No affiliation:</strong> This page is not affiliated with, endorsed by, or sponsored by any of
+            the shopping malls referenced (including but not limited to Suria KLCC, Pavilion Kuala Lumpur,
+            Mid Valley Megamall, Sunway Group properties, IOI City Mall, 1 Utama, Berjaya Times Square,
+            The Exchange TRX, Lalaport BBCC, Pavilion Bukit Jalil, and other named venues). All mall names and
+            trademarks remain the property of their respective owners.
+          </p>
+          <p>
+            <strong>No warranty:</strong> Information is provided "as is" without warranty of any kind. Always
+            verify current parking availability, rates, opening hours, and access conditions directly with the
+            respective mall management before travelling. The operators of this page accept no liability for any
+            loss, inconvenience, or damages arising from reliance on the information shown.
+          </p>
+          <p>
+            <strong>For real live data:</strong> Production deployments should integrate with the official APIs
+            or sensor feeds operated by each mall's parking management system, where available, and obtain proper
+            licensing and consent.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
+<section class="py-12 bg-white border-b border-gray-100" id="credits">
+  <div class="max-w-5xl mx-auto px-8">
+    <h3 class="text-2xl font-black text-gray-900 mb-5">Credits &amp; Acknowledgements</h3>
+    <div class="text-gray-600 text-sm leading-relaxed space-y-2">
+      <p><strong>Mall information:</strong> Mall names, locations, and general references compiled from publicly available sources including
+        <a href="https://en.wikipedia.org/wiki/List_of_shopping_malls_in_Malaysia" target="_blank" rel="noopener" class="text-blue-600 hover:underline">Wikipedia &mdash; List of Shopping Malls in Malaysia</a>
+        (CC BY-SA 4.0) and the official websites of the respective malls.</p>
+      <p><strong>Map links:</strong> Powered by <a href="https://maps.google.com" target="_blank" rel="noopener" class="text-blue-600 hover:underline">Google Maps</a>.</p>
+      <p><strong>Hero image:</strong> Photograph of the Petronas Twin Towers, Kuala Lumpur, sourced from
+        <a href="https://unsplash.com" target="_blank" rel="noopener" class="text-blue-600 hover:underline">Unsplash</a> under the Unsplash License.</p>
+      <p><strong>Styling framework:</strong> <a href="https://tailwindcss.com" target="_blank" rel="noopener" class="text-blue-600 hover:underline">Tailwind CSS</a> via the Play CDN (MIT license).</p>
+      <p><strong>Parking rate guidance:</strong> If consulted, official posted rates from each mall management should be used; previously published indicative ranges have been removed pending verification.</p>
+    </div>
+  </div>
+</section>
 
 <footer class="bg-[#07111f] text-white py-14" id="contact">
-<div class="max-w-7xl mx-auto px-8 grid md:grid-cols-4 gap-10">
-
-<div>
-<h2 class="text-2xl font-black mb-4">KL Mall Live Parking</h2>
-<p class="text-white/60">
-Real-time parking availability at your fingertips.
-</p>
-</div>
-
-<div>
-<h3 class="font-bold mb-4">Quick Links</h3>
-<div class="space-y-2 text-white/60">
-<p><a href="#home" class="hover:text-white transition">Home</a></p>
-<p><a href="#parking-spots" class="hover:text-white transition">Parking Spots</a></p>
-<p><a href="#rates" class="hover:text-white transition">Rates</a></p>
-</div>
-</div>
-
-<div>
-<h3 class="font-bold mb-4">Support</h3>
-<div class="space-y-2 text-white/60">
-<p><a href="#info" class="hover:text-white transition">FAQ</a></p>
-<p><a href="#info" class="hover:text-white transition">Help Center</a></p>
-<p><a href="mailto:hello@klmallparking.com" class="hover:text-white transition">Report Issue</a></p>
-</div>
-</div>
-
-<div>
-<h3 class="font-bold mb-4">Contact Us</h3>
-<div class="space-y-2 text-white/60">
-<p><a href="mailto:hello@klmallparking.com" class="hover:text-white transition">hello@klmallparking.com</a></p>
-<p><a href="tel:+60312345678" class="hover:text-white transition">+60 3-1234 5678</a></p>
-<p>Kuala Lumpur, Malaysia</p>
-</div>
-</div>
-
-</div>
-
-<div class="border-t border-white/10 mt-10 pt-6 text-center text-white/40">
-&copy; 2026 KL Mall Live Parking. All rights reserved.
-</div>
-
+  <div class="max-w-7xl mx-auto px-8 grid md:grid-cols-4 gap-10">
+    <div>
+      <h2 class="text-2xl font-black mb-4">KL Mall Live Parking</h2>
+      <p class="text-white/60">Real-time parking availability at your fingertips.</p>
+    </div>
+    <div>
+      <h3 class="font-bold mb-4">Quick Links</h3>
+      <div class="space-y-2 text-white/60">
+        <p><a href="#home" class="hover:text-white transition">Home</a></p>
+        <p><a href="#parking-spots" class="hover:text-white transition">Parking Spots</a></p>
+        <p><a href="#alerts" class="hover:text-white transition">Live Alerts</a></p>
+      </div>
+    </div>
+    <div>
+      <h3 class="font-bold mb-4">Information</h3>
+      <div class="space-y-2 text-white/60">
+        <p><a href="#disclaimer" class="hover:text-white transition">Disclaimer</a></p>
+        <p><a href="#credits" class="hover:text-white transition">Credits</a></p>
+        <p><a href="mailto:hello@klmallparking.com" class="hover:text-white transition">Report Issue</a></p>
+      </div>
+    </div>
+    <div>
+      <h3 class="font-bold mb-4">Contact Us</h3>
+      <div class="space-y-2 text-white/60">
+        <p><a href="mailto:hello@klmallparking.com" class="hover:text-white transition">hello@klmallparking.com</a></p>
+        <p><a href="tel:+60312345678" class="hover:text-white transition">+60 3-1234 5678</a></p>
+        <p>Kuala Lumpur, Malaysia</p>
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-white/10 mt-10 pt-6 text-center text-white/40 text-sm">
+    <p>&copy; 2026 KL Mall Live Parking &middot; For demonstration purposes only &middot; Data is simulated</p>
+  </div>
 </footer>
-
 
 <script>
 const malls = [
-  { name: "Suria KLCC", available: 412, total: 700, initials: "KLCC", gradient: "from-blue-600 to-indigo-800", maps: "https://maps.google.com/?q=Suria+KLCC+Kuala+Lumpur" },
-  { name: "Pavilion KL", available: 198, total: 500, initials: "PKL", gradient: "from-amber-500 to-orange-700", maps: "https://maps.google.com/?q=Pavilion+KL+Kuala+Lumpur" },
-  { name: "Mid Valley Megamall", available: 316, total: 600, initials: "MVM", gradient: "from-emerald-500 to-teal-700", maps: "https://maps.google.com/?q=Mid+Valley+Megamall+Kuala+Lumpur" },
-  { name: "Sunway Velocity", available: 78, total: 400, initials: "SV", gradient: "from-red-500 to-rose-700", maps: "https://maps.google.com/?q=Sunway+Velocity+Mall+Kuala+Lumpur" },
-  { name: "1 Utama", available: 252, total: 700, initials: "1U", gradient: "from-purple-500 to-violet-800", maps: "https://maps.google.com/?q=1+Utama+Shopping+Centre" },
-  { name: "Sunway Pyramid", available: 384, total: 650, initials: "SP", gradient: "from-yellow-500 to-amber-700", maps: "https://maps.google.com/?q=Sunway+Pyramid+Mall" },
-  { name: "TRX Exchange", available: 428, total: 700, initials: "TRX", gradient: "from-cyan-500 to-blue-700", maps: "https://maps.google.com/?q=The+Exchange+TRX+Kuala+Lumpur" },
-  { name: "The Gardens", available: 176, total: 450, initials: "TG", gradient: "from-green-500 to-emerald-800", maps: "https://maps.google.com/?q=The+Gardens+Mall+Kuala+Lumpur" },
-  { name: "NU Sentral", available: 64, total: 350, initials: "NU", gradient: "from-slate-500 to-gray-800", maps: "https://maps.google.com/?q=NU+Sentral+Kuala+Lumpur" },
-  { name: "Berjaya Times Square", available: 221, total: 550, initials: "BTS", gradient: "from-pink-500 to-fuchsia-700", maps: "https://maps.google.com/?q=Berjaya+Times+Square+Kuala+Lumpur" },
-  { name: "Lot 10", available: 317, total: 500, initials: "L10", gradient: "from-lime-500 to-green-700", maps: "https://maps.google.com/?q=Lot+10+Bukit+Bintang+Kuala+Lumpur" },
-  { name: "IOI City Mall", available: 300, total: 600, initials: "IOI", gradient: "from-sky-500 to-blue-800", maps: "https://maps.google.com/?q=IOI+City+Mall+Putrajaya" },
-  { name: "Lalaport BBCC", available: 288, total: 550, initials: "BBCC", gradient: "from-rose-400 to-red-700", maps: "https://maps.google.com/?q=LaLaport+BBCC+Kuala+Lumpur" },
-  { name: "Avenue K", available: 143, total: 350, initials: "AK", gradient: "from-indigo-400 to-purple-700", maps: "https://maps.google.com/?q=Avenue+K+Kuala+Lumpur" },
-  { name: "Pavilion Bukit Jalil", available: 275, total: 600, initials: "PBJ", gradient: "from-orange-400 to-red-600", maps: "https://maps.google.com/?q=Pavilion+Bukit+Jalil" },
-  { name: "Pavilion Damansara", available: 201, total: 500, initials: "PD", gradient: "from-teal-400 to-cyan-700", maps: "https://maps.google.com/?q=Pavilion+Damansara+Heights" },
-  { name: "KL Gateway Mall", available: 129, total: 350, initials: "KLG", gradient: "from-violet-500 to-indigo-800", maps: "https://maps.google.com/?q=KL+Gateway+Mall+Kuala+Lumpur" },
-  { name: "Sunway Putra Mall", available: 244, total: 500, initials: "SPM", gradient: "from-amber-400 to-yellow-700", maps: "https://maps.google.com/?q=Sunway+Putra+Mall+Kuala+Lumpur" },
-  { name: "MyTOWN", available: 266, total: 500, initials: "MT", gradient: "from-blue-400 to-indigo-600", maps: "https://maps.google.com/?q=MyTOWN+Shopping+Centre+Kuala+Lumpur" },
-  { name: "The Curve", available: 156, total: 400, initials: "TC", gradient: "from-fuchsia-400 to-pink-700", maps: "https://maps.google.com/?q=The+Curve+Mutiara+Damansara" },
-  { name: "IPC Shopping Centre", available: 232, total: 450, initials: "IPC", gradient: "from-emerald-400 to-green-700", maps: "https://maps.google.com/?q=IPC+Shopping+Centre+Mutiara+Damansara" },
-  { name: "Wangsa Walk", available: 111, total: 350, initials: "WW", gradient: "from-stone-400 to-stone-700", maps: "https://maps.google.com/?q=Wangsa+Walk+Mall+Kuala+Lumpur" },
-  { name: "Quill City Mall", available: 184, total: 450, initials: "QC", gradient: "from-cyan-400 to-teal-700", maps: "https://maps.google.com/?q=Quill+City+Mall+Kuala+Lumpur" },
-  { name: "Fahrenheit88", available: 148, total: 350, initials: "F88", gradient: "from-red-400 to-orange-700", maps: "https://maps.google.com/?q=Fahrenheit88+Bukit+Bintang+Kuala+Lumpur" },
-  { name: "Starhill Gallery", available: 95, total: 300, initials: "SH", gradient: "from-yellow-400 to-amber-800", maps: "https://maps.google.com/?q=The+Starhill+Bukit+Bintang+Kuala+Lumpur" }
+  { name: "Suria KLCC", available: 412, total: 700, color: "blue", maps: "https://maps.google.com/?q=Suria+KLCC+Kuala+Lumpur" },
+  { name: "Pavilion Kuala Lumpur", available: 198, total: 500, color: "amber", maps: "https://maps.google.com/?q=Pavilion+KL+Kuala+Lumpur" },
+  { name: "Mid Valley Megamall", available: 316, total: 600, color: "emerald", maps: "https://maps.google.com/?q=Mid+Valley+Megamall+Kuala+Lumpur" },
+  { name: "Sunway Velocity Mall", available: 78, total: 400, color: "rose", maps: "https://maps.google.com/?q=Sunway+Velocity+Mall+Kuala+Lumpur" },
+  { name: "1 Utama Shopping Centre", available: 252, total: 700, color: "violet", maps: "https://maps.google.com/?q=1+Utama+Shopping+Centre" },
+  { name: "Sunway Pyramid", available: 384, total: 650, color: "amber", maps: "https://maps.google.com/?q=Sunway+Pyramid+Mall" },
+  { name: "The Exchange TRX", available: 428, total: 700, color: "cyan", maps: "https://maps.google.com/?q=The+Exchange+TRX+Kuala+Lumpur" },
+  { name: "The Gardens Mall", available: 176, total: 450, color: "emerald", maps: "https://maps.google.com/?q=The+Gardens+Mall+Kuala+Lumpur" },
+  { name: "NU Sentral", available: 64, total: 350, color: "slate", maps: "https://maps.google.com/?q=NU+Sentral+Kuala+Lumpur" },
+  { name: "Berjaya Times Square", available: 221, total: 550, color: "pink", maps: "https://maps.google.com/?q=Berjaya+Times+Square+Kuala+Lumpur" },
+  { name: "Lot 10 Bukit Bintang", available: 317, total: 500, color: "lime", maps: "https://maps.google.com/?q=Lot+10+Bukit+Bintang+Kuala+Lumpur" },
+  { name: "IOI City Mall Putrajaya", available: 300, total: 600, color: "sky", maps: "https://maps.google.com/?q=IOI+City+Mall+Putrajaya" },
+  { name: "Mitsui Lalaport BBCC", available: 288, total: 550, color: "rose", maps: "https://maps.google.com/?q=LaLaport+BBCC+Kuala+Lumpur" },
+  { name: "Avenue K", available: 143, total: 350, color: "indigo", maps: "https://maps.google.com/?q=Avenue+K+Kuala+Lumpur" },
+  { name: "Pavilion Bukit Jalil", available: 275, total: 600, color: "orange", maps: "https://maps.google.com/?q=Pavilion+Bukit+Jalil" },
+  { name: "Pavilion Damansara Heights", available: 201, total: 500, color: "teal", maps: "https://maps.google.com/?q=Pavilion+Damansara+Heights" },
+  { name: "KL Gateway Mall", available: 129, total: 350, color: "violet", maps: "https://maps.google.com/?q=KL+Gateway+Mall+Kuala+Lumpur" },
+  { name: "Sunway Putra Mall", available: 244, total: 500, color: "amber", maps: "https://maps.google.com/?q=Sunway+Putra+Mall+Kuala+Lumpur" },
+  { name: "MyTOWN Shopping Centre", available: 266, total: 500, color: "blue", maps: "https://maps.google.com/?q=MyTOWN+Shopping+Centre+Kuala+Lumpur" },
+  { name: "The Curve Mutiara Damansara", available: 156, total: 400, color: "fuchsia", maps: "https://maps.google.com/?q=The+Curve+Mutiara+Damansara" },
+  { name: "IPC Shopping Centre", available: 232, total: 450, color: "emerald", maps: "https://maps.google.com/?q=IPC+Shopping+Centre+Mutiara+Damansara" },
+  { name: "Wangsa Walk Mall", available: 111, total: 350, color: "stone", maps: "https://maps.google.com/?q=Wangsa+Walk+Mall+Kuala+Lumpur" },
+  { name: "Quill City Mall", available: 184, total: 450, color: "cyan", maps: "https://maps.google.com/?q=Quill+City+Mall+Kuala+Lumpur" },
+  { name: "Fahrenheit88", available: 148, total: 350, color: "red", maps: "https://maps.google.com/?q=Fahrenheit88+Bukit+Bintang+Kuala+Lumpur" },
+  { name: "The Starhill", available: 95, total: 300, color: "yellow", maps: "https://maps.google.com/?q=The+Starhill+Bukit+Bintang+Kuala+Lumpur" }
 ];
 
+const REFRESH_INTERVAL_SECONDS = 60;
+let countdownSeconds = REFRESH_INTERVAL_SECONDS;
 
 function getLevel(available, total) {
   const pct = (available / total) * 100;
-  if (pct >= 50) return { label: "High", color: "green", bgClass: "bg-green-100", textClass: "text-green-700", numClass: "text-green-500", barClass: "bg-green-500" };
-  if (pct >= 25) return { label: "Medium", color: "yellow", bgClass: "bg-yellow-100", textClass: "text-yellow-700", numClass: "text-yellow-500", barClass: "bg-yellow-500" };
-  return { label: "Low", color: "red", bgClass: "bg-red-100", textClass: "text-red-700", numClass: "text-red-500", barClass: "bg-red-500" };
+  if (pct >= 50) return { label: "High", bg: "bg-green-100", text: "text-green-700", num: "text-green-600", bar: "bg-green-500" };
+  if (pct >= 25) return { label: "Medium", bg: "bg-yellow-100", text: "text-yellow-700", num: "text-yellow-600", bar: "bg-yellow-500" };
+  return { label: "Low", bg: "bg-red-100", text: "text-red-700", num: "text-red-600", bar: "bg-red-500" };
 }
 
 function renderMalls(mallList) {
   const grid = document.getElementById('mall-grid');
   grid.innerHTML = '';
-  
+
+  if (mallList.length === 0) {
+    grid.innerHTML = '<p class="text-gray-400 col-span-full text-center py-12">No malls match your search.</p>';
+    return;
+  }
+
   mallList.forEach((mall, idx) => {
     const level = getLevel(mall.available, mall.total);
     const pct = Math.round((mall.available / mall.total) * 100);
-    
+
     const card = document.createElement('div');
-    card.className = 'bg-white rounded-3xl overflow-hidden shadow-lg mall-card animate-fade-in';
-    card.style.animationDelay = `${idx * 0.05}s`;
+    card.className = 'bg-white rounded-3xl overflow-hidden shadow-lg mall-card animate-fade-in border border-gray-100';
+    card.style.animationDelay = `${idx * 0.04}s`;
     card.style.opacity = '0';
-    
+
     card.innerHTML = `
-      <a href="${mall.maps}" target="_blank" rel="noopener noreferrer" class="block">
-        <div class="h-40 w-full overflow-hidden bg-gradient-to-br ${mall.gradient} flex items-center justify-center">
-          <span class="text-white/90 text-3xl font-black tracking-wide">${mall.initials}</span>
-        </div>
-      </a>
-      <div class="p-5">
-        <div class="flex items-center justify-between">
-          <h3 class="font-bold text-sm">${mall.name}</h3>
-          <span class="${level.bgClass} ${level.textClass} px-3 py-1 rounded-full text-xs font-bold">
+      <div class="p-6">
+        <div class="flex items-start justify-between gap-3 mb-4">
+          <h3 class="font-black text-lg text-gray-900 leading-tight">${mall.name}</h3>
+          <span class="${level.bg} ${level.text} px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">
             ${level.label}
           </span>
         </div>
-        <div class="mt-5 flex items-end gap-2">
-          <span class="text-4xl font-black ${level.numClass}">${mall.available}</span>
-          <span class="text-gray-500 mb-1 text-sm">/ ${mall.total}</span>
+        <div class="flex items-end gap-2 mb-4">
+          <span class="text-4xl font-black ${level.num}">${mall.available}</span>
+          <span class="text-gray-500 mb-1 text-sm">/ ${mall.total} spots</span>
         </div>
-        <div class="w-full h-2 bg-gray-100 rounded-full mt-4 overflow-hidden">
-          <div class="h-full ${level.barClass} rounded-full transition-all duration-700" style="width:${pct}%"></div>
+        <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+          <div class="h-full ${level.bar} rounded-full transition-all duration-700" style="width:${pct}%"></div>
         </div>
-        <div class="flex items-center justify-between mt-3">
-          <p class="text-gray-400 text-xs">Live Parking Active</p>
-          <a href="${mall.maps}" target="_blank" rel="noopener noreferrer" class="text-blue-500 text-xs font-semibold hover:underline">Directions &rarr;</a>
+        <div class="flex items-center justify-between mt-4">
+          <p class="text-gray-400 text-xs flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+            Live
+          </p>
+          <a href="${mall.maps}" target="_blank" rel="noopener noreferrer" class="text-blue-600 text-xs font-semibold hover:underline">
+            Directions &rarr;
+          </a>
         </div>
       </div>
     `;
-    
     grid.appendChild(card);
   });
 }
 
-
 function updateTimestamp() {
   const now = new Date();
-  const options = { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
-  document.getElementById('last-updated').textContent = now.toLocaleDateString('en-MY', options);
+  const formatted = now.toLocaleString('en-MY', {
+    day: 'numeric', month: 'short', year: 'numeric',
+    hour: '2-digit', minute: '2-digit', second: '2-digit',
+    hour12: true
+  });
+  const el = document.getElementById('last-updated');
+  if (el) el.textContent = formatted;
 }
 
 function updateTotalSpots() {
   const total = malls.reduce((sum, m) => sum + m.available, 0);
-  document.getElementById('total-spots').textContent = total.toLocaleString();
+  const el = document.getElementById('total-spots');
+  if (el) {
+    el.textContent = total.toLocaleString();
+    el.classList.remove('flash-update');
+    void el.offsetWidth;
+    el.classList.add('flash-update');
+  }
 }
 
-function refreshData() {
-  // Simulate live data refresh with slight random variation
+function refreshData(triggeredManually) {
   malls.forEach(mall => {
-    const variation = Math.floor(Math.random() * 40) - 20;
-    mall.available = Math.max(10, Math.min(mall.total, mall.available + variation));
+    const variation = Math.floor(Math.random() * 50) - 25;
+    mall.available = Math.max(0, Math.min(mall.total, mall.available + variation));
   });
-  renderMalls(malls);
+
+  const searchValue = document.getElementById('search-input').value.toLowerCase();
+  const list = searchValue
+    ? malls.filter(m => m.name.toLowerCase().includes(searchValue))
+    : malls;
+
+  renderMalls(list);
   updateTimestamp();
   updateTotalSpots();
+  generateAlerts();
+
+  if (triggeredManually) {
+    const icon = document.getElementById('refresh-icon');
+    icon.classList.add('spinning');
+    setTimeout(() => icon.classList.remove('spinning'), 1000);
+  }
+
+  countdownSeconds = REFRESH_INTERVAL_SECONDS;
 }
 
-// Search functionality
+function manualRefresh() {
+  refreshData(true);
+}
+
 document.getElementById('search-input').addEventListener('input', function(e) {
   const query = e.target.value.toLowerCase();
-  if (query === '') {
-    renderMalls(malls);
-  } else {
-    const filtered = malls.filter(m => m.name.toLowerCase().includes(query));
-    renderMalls(filtered);
-  }
+  const filtered = query === '' ? malls : malls.filter(m => m.name.toLowerCase().includes(query));
+  renderMalls(filtered);
 });
 
-// Live Alerts Feed
 function generateAlerts() {
-  const alertTypes = [
-    { icon: '🔴', msg: (m) => `${m.name} is almost full! Only ${m.available} spots left.`, condition: (m) => m.available / m.total < 0.25 },
-    { icon: '🟡', msg: (m) => `${m.name} filling up — ${m.available} spots remaining.`, condition: (m) => m.available / m.total >= 0.25 && m.available / m.total < 0.5 },
-    { icon: '🟢', msg: (m) => `${m.name} has plenty of parking — ${m.available} spots open.`, condition: (m) => m.available / m.total >= 0.5 },
-  ];
-  
   const feed = document.getElementById('alerts-feed');
   if (!feed) return;
   feed.innerHTML = '';
 
-  // Pick 8 random malls for alerts
-  const shuffled = [...malls].sort(() => Math.random() - 0.5).slice(0, 8);
-  
-  shuffled.forEach((mall, idx) => {
-    const alert = alertTypes.find(a => a.condition(mall));
-    const timeAgo = Math.floor(Math.random() * 15) + 1;
-    const bgColor = mall.available / mall.total < 0.25 ? 'border-l-red-500 bg-red-50' : 
-                    mall.available / mall.total < 0.5 ? 'border-l-yellow-500 bg-yellow-50' : 
-                    'border-l-green-500 bg-green-50';
-    
+  const ranked = [...malls].map(m => ({
+    mall: m,
+    pct: m.available / m.total,
+    priority: (m.available / m.total < 0.25) ? 0 : (m.available / m.total < 0.5) ? 1 : 2
+  })).sort((a, b) => a.priority - b.priority || Math.random() - 0.5).slice(0, 8);
+
+  ranked.forEach((entry, idx) => {
+    const m = entry.mall;
+    const pct = entry.pct;
+    let icon, msg, borderColor;
+    if (pct < 0.25) {
+      icon = '🔴';
+      msg = `${m.name} is almost full &mdash; only ${m.available} spots left.`;
+      borderColor = 'border-l-red-500 bg-red-50';
+    } else if (pct < 0.5) {
+      icon = '🟡';
+      msg = `${m.name} is filling up &mdash; ${m.available} spots remaining.`;
+      borderColor = 'border-l-yellow-500 bg-yellow-50';
+    } else {
+      icon = '🟢';
+      msg = `${m.name} has plenty of parking &mdash; ${m.available} spots open.`;
+      borderColor = 'border-l-green-500 bg-green-50';
+    }
+    const timeAgo = Math.floor(Math.random() * 5) + 1;
     const div = document.createElement('div');
-    div.className = `border-l-4 ${bgColor} rounded-xl p-4 flex items-start gap-3 animate-fade-in`;
-    div.style.animationDelay = `${idx * 0.1}s`;
+    div.className = `border-l-4 ${borderColor} rounded-xl p-4 flex items-start gap-3 animate-fade-in`;
+    div.style.animationDelay = `${idx * 0.08}s`;
     div.style.opacity = '0';
     div.innerHTML = `
-      <span class="text-2xl">${alert.icon}</span>
+      <span class="text-2xl">${icon}</span>
       <div class="flex-1">
-        <p class="text-gray-800 font-medium text-sm">${alert.msg(mall)}</p>
+        <p class="text-gray-800 font-medium text-sm">${msg}</p>
         <p class="text-gray-400 text-xs mt-1">${timeAgo} min ago</p>
       </div>
     `;
@@ -365,17 +396,21 @@ function generateAlerts() {
   });
 }
 
-// Initial render
+function tickCountdown() {
+  countdownSeconds--;
+  const el = document.getElementById('countdown');
+  if (el) el.textContent = countdownSeconds;
+  if (countdownSeconds <= 0) {
+    refreshData(false);
+  }
+}
+
 renderMalls(malls);
 updateTimestamp();
 updateTotalSpots();
 generateAlerts();
 
-// Auto-refresh alerts every 30 seconds
-setInterval(() => {
-  refreshData();
-  generateAlerts();
-}, 30000);
+setInterval(tickCountdown, 1000);
 </script>
 
 </body>
