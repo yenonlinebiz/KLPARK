@@ -9,8 +9,8 @@
 body{font-family:Arial,sans-serif;background:#f4f7fb;scroll-behavior:smooth}
 html{scroll-behavior:smooth}
 .hero{
-background-image:linear-gradient(to right, rgba(3,7,18,.95), rgba(3,7,18,.75)),
-url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Kuala_Lumpur_Skyline_from_KL_Tower.jpg/1280px-Kuala_Lumpur_Skyline_from_KL_Tower.jpg');
+background-image:linear-gradient(to right, rgba(3,7,18,.92), rgba(3,7,18,.70)),
+url('https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=1600&q=80');
 background-size:cover;background-position:center}
 .glass{background:rgba(255,255,255,.08);backdrop-filter:blur(14px)}
 .mall-card{transition:transform .3s,box-shadow .3s}
@@ -158,27 +158,10 @@ Refresh Live Data
 
 <section class="py-16 bg-[#f4f7fb]" id="info">
 <div class="max-w-7xl mx-auto px-8">
-<h2 class="text-4xl font-black text-gray-900 mb-4">How It Works</h2>
-<p class="text-gray-500 mb-10">Get real-time parking info in 3 simple steps</p>
+<h2 class="text-4xl font-black text-gray-900 mb-4">Live Parking Alerts</h2>
+<p class="text-gray-500 mb-8">Real-time notifications on parking status changes</p>
 
-<div class="grid md:grid-cols-3 gap-8">
-<div class="text-center">
-<div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white text-2xl font-black mx-auto mb-5">1</div>
-<h3 class="text-xl font-bold mb-2">Browse Malls</h3>
-<p class="text-gray-500">Scroll through the list of 25 malls or use the search feature to find your preferred mall.</p>
-</div>
-
-<div class="text-center">
-<div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white text-2xl font-black mx-auto mb-5">2</div>
-<h3 class="text-xl font-bold mb-2">Check Availability</h3>
-<p class="text-gray-500">View the live parking count and availability level (High, Medium, Low) for each mall.</p>
-</div>
-
-<div class="text-center">
-<div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white text-2xl font-black mx-auto mb-5">3</div>
-<h3 class="text-xl font-bold mb-2">Navigate There</h3>
-<p class="text-gray-500">Click on any mall card to open directions in Google Maps and drive straight to available parking.</p>
-</div>
+<div class="space-y-4" id="alerts-feed">
 </div>
 </div>
 </section>
@@ -232,185 +215,31 @@ Real-time parking availability at your fingertips.
 
 <script>
 const malls = [
-  {
-    name: "Suria KLCC",
-    available: 412,
-    total: 700,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Suria_KLCC_%28park_entrance%29%2C_Kuala_Lumpur.jpg/800px-Suria_KLCC_%28park_entrance%29%2C_Kuala_Lumpur.jpg",
-    maps: "https://maps.google.com/?q=Suria+KLCC+Kuala+Lumpur"
-  },
-  {
-    name: "Pavilion KL",
-    available: 198,
-    total: 500,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Exterior_of_Pavilion_KL.jpg/800px-Exterior_of_Pavilion_KL.jpg",
-    maps: "https://maps.google.com/?q=Pavilion+KL+Kuala+Lumpur"
-  },
-  {
-    name: "Mid Valley Megamall",
-    available: 316,
-    total: 600,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Mid_Valley_Kuala_Lumpur.JPG/800px-Mid_Valley_Kuala_Lumpur.JPG",
-    maps: "https://maps.google.com/?q=Mid+Valley+Megamall+Kuala+Lumpur"
-  },
-  {
-    name: "Sunway Velocity",
-    available: 78,
-    total: 400,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Sunway_Velocity_Mall.jpg/800px-Sunway_Velocity_Mall.jpg",
-    maps: "https://maps.google.com/?q=Sunway+Velocity+Mall+Kuala+Lumpur"
-  },
-  {
-    name: "1 Utama",
-    available: 252,
-    total: 700,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/1_Utama_Shopping_Centre.jpg/800px-1_Utama_Shopping_Centre.jpg",
-    maps: "https://maps.google.com/?q=1+Utama+Shopping+Centre"
-  },
-
-  {
-    name: "Sunway Pyramid",
-    available: 384,
-    total: 650,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Sunway_pyramid_entrance_2.jpg/800px-Sunway_pyramid_entrance_2.jpg",
-    maps: "https://maps.google.com/?q=Sunway+Pyramid+Mall"
-  },
-  {
-    name: "TRX Exchange",
-    available: 428,
-    total: 700,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/The_Exchange_TRX_Shopping_Mall_%2823.12.02%29.jpg/800px-The_Exchange_TRX_Shopping_Mall_%2823.12.02%29.jpg",
-    maps: "https://maps.google.com/?q=The+Exchange+TRX+Kuala+Lumpur"
-  },
-  {
-    name: "The Gardens",
-    available: 176,
-    total: 450,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/KL-Mid_Valley.JPG/800px-KL-Mid_Valley.JPG",
-    maps: "https://maps.google.com/?q=The+Gardens+Mall+Kuala+Lumpur"
-  },
-  {
-    name: "NU Sentral",
-    available: 64,
-    total: 350,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/NU_Sentral_%28230715-1625%29.jpg/800px-NU_Sentral_%28230715-1625%29.jpg",
-    maps: "https://maps.google.com/?q=NU+Sentral+Kuala+Lumpur"
-  },
-  {
-    name: "Berjaya Times Square",
-    available: 221,
-    total: 550,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Kuala_Lumpur_Malaysia_Berjaya-Times-Square-01.jpg/800px-Kuala_Lumpur_Malaysia_Berjaya-Times-Square-01.jpg",
-    maps: "https://maps.google.com/?q=Berjaya+Times+Square+Kuala+Lumpur"
-  },
-
-  {
-    name: "Lot 10",
-    available: 317,
-    total: 500,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Lot_10%2C_Star_Hill%2C_Kuala_Lumpur.jpg/800px-Lot_10%2C_Star_Hill%2C_Kuala_Lumpur.jpg",
-    maps: "https://maps.google.com/?q=Lot+10+Bukit+Bintang+Kuala+Lumpur"
-  },
-  {
-    name: "IOI City Mall",
-    available: 300,
-    total: 600,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/IOI_City_Mall.jpg/800px-IOI_City_Mall.jpg",
-    maps: "https://maps.google.com/?q=IOI+City+Mall+Putrajaya"
-  },
-  {
-    name: "Lalaport BBCC",
-    available: 288,
-    total: 550,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Bukit_Bintang_City_Centre_%28BBCC%29_in_May_2020.jpg/800px-Bukit_Bintang_City_Centre_%28BBCC%29_in_May_2020.jpg",
-    maps: "https://maps.google.com/?q=LaLaport+BBCC+Kuala+Lumpur"
-  },
-  {
-    name: "Avenue K",
-    available: 143,
-    total: 350,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Kuala_Lumpur%2C_Malaysia%2C_View_of_KLCC.jpg/800px-Kuala_Lumpur%2C_Malaysia%2C_View_of_KLCC.jpg",
-    maps: "https://maps.google.com/?q=Avenue+K+Kuala+Lumpur"
-  },
-  {
-    name: "Pavilion Bukit Jalil",
-    available: 275,
-    total: 600,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Pavilion_Bukit_Jalil_%28220713%29.jpg/800px-Pavilion_Bukit_Jalil_%28220713%29.jpg",
-    maps: "https://maps.google.com/?q=Pavilion+Bukit+Jalil"
-  },
-
-  {
-    name: "Pavilion Damansara",
-    available: 201,
-    total: 500,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Pavillion_KL.jpg/800px-Pavillion_KL.jpg",
-    maps: "https://maps.google.com/?q=Pavilion+Damansara+Heights"
-  },
-  {
-    name: "KL Gateway Mall",
-    available: 129,
-    total: 350,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Kuala_Lumpur_Skyline_from_KL_Tower.jpg/800px-Kuala_Lumpur_Skyline_from_KL_Tower.jpg",
-    maps: "https://maps.google.com/?q=KL+Gateway+Mall+Kuala+Lumpur"
-  },
-  {
-    name: "Sunway Putra Mall",
-    available: 244,
-    total: 500,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/The_Mall_and_Legend_Hotel%2C_Kuala_Lumpur.jpg/800px-The_Mall_and_Legend_Hotel%2C_Kuala_Lumpur.jpg",
-    maps: "https://maps.google.com/?q=Sunway+Putra+Mall+Kuala+Lumpur"
-  },
-  {
-    name: "MyTOWN",
-    available: 266,
-    total: 500,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/2016_Kuala_Lumpur%2C_Park_KLCC_i_Suria_KLCC_%28cropped%29.jpg/800px-2016_Kuala_Lumpur%2C_Park_KLCC_i_Suria_KLCC_%28cropped%29.jpg",
-    maps: "https://maps.google.com/?q=MyTOWN+Shopping+Centre+Kuala+Lumpur"
-  },
-  {
-    name: "The Curve",
-    available: 156,
-    total: 400,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Sunway_City%2C_Petaling_Jaya%2C_Malaysia.jpg/800px-Sunway_City%2C_Petaling_Jaya%2C_Malaysia.jpg",
-    maps: "https://maps.google.com/?q=The+Curve+Mutiara+Damansara"
-  },
-
-  {
-    name: "IPC Shopping Centre",
-    available: 232,
-    total: 450,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/SW_Sunway_Pyramid_outside.jpg/800px-SW_Sunway_Pyramid_outside.jpg",
-    maps: "https://maps.google.com/?q=IPC+Shopping+Centre+Mutiara+Damansara"
-  },
-  {
-    name: "Wangsa Walk",
-    available: 111,
-    total: 350,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/KL-Mid_Valley.JPG/800px-KL-Mid_Valley.JPG",
-    maps: "https://maps.google.com/?q=Wangsa+Walk+Mall+Kuala+Lumpur"
-  },
-  {
-    name: "Quill City Mall",
-    available: 184,
-    total: 450,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Quill_City_Mall.jpg/800px-Quill_City_Mall.jpg",
-    maps: "https://maps.google.com/?q=Quill+City+Mall+Kuala+Lumpur"
-  },
-  {
-    name: "Fahrenheit88",
-    available: 148,
-    total: 350,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Bukit_Bintang.JPG/800px-Bukit_Bintang.JPG",
-    maps: "https://maps.google.com/?q=Fahrenheit88+Bukit+Bintang+Kuala+Lumpur"
-  },
-  {
-    name: "Starhill Gallery",
-    available: 95,
-    total: 300,
-    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/KL_-_Jalan_Bukit_Bintang.jpg/800px-KL_-_Jalan_Bukit_Bintang.jpg",
-    maps: "https://maps.google.com/?q=The+Starhill+Bukit+Bintang+Kuala+Lumpur"
-  }
+  { name: "Suria KLCC", available: 412, total: 700, initials: "KLCC", gradient: "from-blue-600 to-indigo-800", maps: "https://maps.google.com/?q=Suria+KLCC+Kuala+Lumpur" },
+  { name: "Pavilion KL", available: 198, total: 500, initials: "PKL", gradient: "from-amber-500 to-orange-700", maps: "https://maps.google.com/?q=Pavilion+KL+Kuala+Lumpur" },
+  { name: "Mid Valley Megamall", available: 316, total: 600, initials: "MVM", gradient: "from-emerald-500 to-teal-700", maps: "https://maps.google.com/?q=Mid+Valley+Megamall+Kuala+Lumpur" },
+  { name: "Sunway Velocity", available: 78, total: 400, initials: "SV", gradient: "from-red-500 to-rose-700", maps: "https://maps.google.com/?q=Sunway+Velocity+Mall+Kuala+Lumpur" },
+  { name: "1 Utama", available: 252, total: 700, initials: "1U", gradient: "from-purple-500 to-violet-800", maps: "https://maps.google.com/?q=1+Utama+Shopping+Centre" },
+  { name: "Sunway Pyramid", available: 384, total: 650, initials: "SP", gradient: "from-yellow-500 to-amber-700", maps: "https://maps.google.com/?q=Sunway+Pyramid+Mall" },
+  { name: "TRX Exchange", available: 428, total: 700, initials: "TRX", gradient: "from-cyan-500 to-blue-700", maps: "https://maps.google.com/?q=The+Exchange+TRX+Kuala+Lumpur" },
+  { name: "The Gardens", available: 176, total: 450, initials: "TG", gradient: "from-green-500 to-emerald-800", maps: "https://maps.google.com/?q=The+Gardens+Mall+Kuala+Lumpur" },
+  { name: "NU Sentral", available: 64, total: 350, initials: "NU", gradient: "from-slate-500 to-gray-800", maps: "https://maps.google.com/?q=NU+Sentral+Kuala+Lumpur" },
+  { name: "Berjaya Times Square", available: 221, total: 550, initials: "BTS", gradient: "from-pink-500 to-fuchsia-700", maps: "https://maps.google.com/?q=Berjaya+Times+Square+Kuala+Lumpur" },
+  { name: "Lot 10", available: 317, total: 500, initials: "L10", gradient: "from-lime-500 to-green-700", maps: "https://maps.google.com/?q=Lot+10+Bukit+Bintang+Kuala+Lumpur" },
+  { name: "IOI City Mall", available: 300, total: 600, initials: "IOI", gradient: "from-sky-500 to-blue-800", maps: "https://maps.google.com/?q=IOI+City+Mall+Putrajaya" },
+  { name: "Lalaport BBCC", available: 288, total: 550, initials: "BBCC", gradient: "from-rose-400 to-red-700", maps: "https://maps.google.com/?q=LaLaport+BBCC+Kuala+Lumpur" },
+  { name: "Avenue K", available: 143, total: 350, initials: "AK", gradient: "from-indigo-400 to-purple-700", maps: "https://maps.google.com/?q=Avenue+K+Kuala+Lumpur" },
+  { name: "Pavilion Bukit Jalil", available: 275, total: 600, initials: "PBJ", gradient: "from-orange-400 to-red-600", maps: "https://maps.google.com/?q=Pavilion+Bukit+Jalil" },
+  { name: "Pavilion Damansara", available: 201, total: 500, initials: "PD", gradient: "from-teal-400 to-cyan-700", maps: "https://maps.google.com/?q=Pavilion+Damansara+Heights" },
+  { name: "KL Gateway Mall", available: 129, total: 350, initials: "KLG", gradient: "from-violet-500 to-indigo-800", maps: "https://maps.google.com/?q=KL+Gateway+Mall+Kuala+Lumpur" },
+  { name: "Sunway Putra Mall", available: 244, total: 500, initials: "SPM", gradient: "from-amber-400 to-yellow-700", maps: "https://maps.google.com/?q=Sunway+Putra+Mall+Kuala+Lumpur" },
+  { name: "MyTOWN", available: 266, total: 500, initials: "MT", gradient: "from-blue-400 to-indigo-600", maps: "https://maps.google.com/?q=MyTOWN+Shopping+Centre+Kuala+Lumpur" },
+  { name: "The Curve", available: 156, total: 400, initials: "TC", gradient: "from-fuchsia-400 to-pink-700", maps: "https://maps.google.com/?q=The+Curve+Mutiara+Damansara" },
+  { name: "IPC Shopping Centre", available: 232, total: 450, initials: "IPC", gradient: "from-emerald-400 to-green-700", maps: "https://maps.google.com/?q=IPC+Shopping+Centre+Mutiara+Damansara" },
+  { name: "Wangsa Walk", available: 111, total: 350, initials: "WW", gradient: "from-stone-400 to-stone-700", maps: "https://maps.google.com/?q=Wangsa+Walk+Mall+Kuala+Lumpur" },
+  { name: "Quill City Mall", available: 184, total: 450, initials: "QC", gradient: "from-cyan-400 to-teal-700", maps: "https://maps.google.com/?q=Quill+City+Mall+Kuala+Lumpur" },
+  { name: "Fahrenheit88", available: 148, total: 350, initials: "F88", gradient: "from-red-400 to-orange-700", maps: "https://maps.google.com/?q=Fahrenheit88+Bukit+Bintang+Kuala+Lumpur" },
+  { name: "Starhill Gallery", available: 95, total: 300, initials: "SH", gradient: "from-yellow-400 to-amber-800", maps: "https://maps.google.com/?q=The+Starhill+Bukit+Bintang+Kuala+Lumpur" }
 ];
 
 
@@ -436,10 +265,8 @@ function renderMalls(mallList) {
     
     card.innerHTML = `
       <a href="${mall.maps}" target="_blank" rel="noopener noreferrer" class="block">
-        <div class="h-40 w-full overflow-hidden">
-          <img src="${mall.image}" alt="${mall.name}" 
-            class="h-40 w-full object-cover"
-            onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Kuala_Lumpur_Skyline_from_KL_Tower.jpg/800px-Kuala_Lumpur_Skyline_from_KL_Tower.jpg'">
+        <div class="h-40 w-full overflow-hidden bg-gradient-to-br ${mall.gradient} flex items-center justify-center">
+          <span class="text-white/90 text-3xl font-black tracking-wide">${mall.initials}</span>
         </div>
       </a>
       <div class="p-5">
@@ -501,10 +328,54 @@ document.getElementById('search-input').addEventListener('input', function(e) {
   }
 });
 
+// Live Alerts Feed
+function generateAlerts() {
+  const alertTypes = [
+    { icon: '🔴', msg: (m) => `${m.name} is almost full! Only ${m.available} spots left.`, condition: (m) => m.available / m.total < 0.25 },
+    { icon: '🟡', msg: (m) => `${m.name} filling up — ${m.available} spots remaining.`, condition: (m) => m.available / m.total >= 0.25 && m.available / m.total < 0.5 },
+    { icon: '🟢', msg: (m) => `${m.name} has plenty of parking — ${m.available} spots open.`, condition: (m) => m.available / m.total >= 0.5 },
+  ];
+  
+  const feed = document.getElementById('alerts-feed');
+  if (!feed) return;
+  feed.innerHTML = '';
+
+  // Pick 8 random malls for alerts
+  const shuffled = [...malls].sort(() => Math.random() - 0.5).slice(0, 8);
+  
+  shuffled.forEach((mall, idx) => {
+    const alert = alertTypes.find(a => a.condition(mall));
+    const timeAgo = Math.floor(Math.random() * 15) + 1;
+    const bgColor = mall.available / mall.total < 0.25 ? 'border-l-red-500 bg-red-50' : 
+                    mall.available / mall.total < 0.5 ? 'border-l-yellow-500 bg-yellow-50' : 
+                    'border-l-green-500 bg-green-50';
+    
+    const div = document.createElement('div');
+    div.className = `border-l-4 ${bgColor} rounded-xl p-4 flex items-start gap-3 animate-fade-in`;
+    div.style.animationDelay = `${idx * 0.1}s`;
+    div.style.opacity = '0';
+    div.innerHTML = `
+      <span class="text-2xl">${alert.icon}</span>
+      <div class="flex-1">
+        <p class="text-gray-800 font-medium text-sm">${alert.msg(mall)}</p>
+        <p class="text-gray-400 text-xs mt-1">${timeAgo} min ago</p>
+      </div>
+    `;
+    feed.appendChild(div);
+  });
+}
+
 // Initial render
 renderMalls(malls);
 updateTimestamp();
 updateTotalSpots();
+generateAlerts();
+
+// Auto-refresh alerts every 30 seconds
+setInterval(() => {
+  refreshData();
+  generateAlerts();
+}, 30000);
 </script>
 
 </body>
