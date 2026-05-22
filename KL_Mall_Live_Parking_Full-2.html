@@ -16,12 +16,12 @@ html{scroll-behavior:smooth}
 .glass{background:rgba(255,255,255,.08);backdrop-filter:blur(14px)}
 .mall-card{
   position:relative;
-  background:#f1f5f9;
-  border:1px solid #e2e8f0;
-  box-shadow:0 4px 20px rgba(0,0,0,.15), 0 2px 6px rgba(0,0,0,.1);
+  background:#d4d8e0;
+  border:1px solid #b0b8c9;
+  box-shadow:0 6px 24px rgba(0,0,0,.18), 0 3px 8px rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.5);
   transition:transform .3s,box-shadow .3s,background .3s
 }
-.mall-card:hover{transform:translateY(-6px);background:#ffffff;box-shadow:0 24px 48px rgba(0,0,0,.25), 0 4px 12px rgba(0,0,0,.15)}
+.mall-card:hover{transform:translateY(-8px);background:#e2e6ee;box-shadow:0 28px 56px rgba(0,0,0,.28), 0 6px 16px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.6)}
 .mall-card::before{
   content:"";position:absolute;top:0;left:0;right:0;height:4px;
   border-top-left-radius:1.5rem;border-top-right-radius:1.5rem
@@ -90,8 +90,8 @@ html{scroll-behavior:smooth}
       </div>
       <p class="text-white/60" id="last-updated">Loading...</p>
       <h2 class="text-6xl font-black text-green-400 mt-8" id="total-spots">--</h2>
-      <p class="text-2xl font-semibold mt-3">Total Available Spots</p>
-      <p class="text-white/60 mt-2">Across 25 malls</p>
+      <p class="text-2xl font-semibold mt-3">Total Parking Bays</p>
+      <p class="text-white/60 mt-2">Across 25 malls (capacity)</p>
       <div class="mt-4 px-3 py-2 rounded-lg bg-white/5 border border-white/10">
         <p class="text-xs text-white/50 uppercase tracking-wider mb-1">Current Status</p>
         <p class="text-sm font-semibold" id="status-text">Calculating...</p>
@@ -127,13 +127,12 @@ html{scroll-behavior:smooth}
 <section class="py-16 bg-white" id="alerts">
   <div class="max-w-7xl mx-auto px-8">
     <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
-      <h2 class="text-4xl font-black text-gray-900">Live Parking Alerts</h2>
-      <div class="flex items-center gap-2 bg-green-50 border border-green-200 px-4 py-2 rounded-full">
-        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-        <span class="text-green-700 text-sm font-semibold">LIVE</span>
+      <h2 class="text-4xl font-black text-gray-900">Parking Information</h2>
+      <div class="flex items-center gap-2 bg-blue-50 border border-blue-200 px-4 py-2 rounded-full">
+        <span class="text-blue-700 text-sm font-semibold">INFO</span>
       </div>
     </div>
-    <p class="text-gray-500 mb-8">Real-time notifications on parking status changes &middot; Auto-refreshes every 60 seconds</p>
+    <p class="text-gray-500 mb-8">Status of live parking data feeds across KL malls</p>
     <div class="space-y-4" id="alerts-feed"></div>
   </div>
 </section>
@@ -235,31 +234,31 @@ html{scroll-behavior:smooth}
 // Hours: 24-hour clock. Most KL malls open 10am-10pm.
 // Variations reflect publicly listed mall hours; verify with each mall before travelling.
 const malls = [
-  { name: "Suria KLCC", total: 700, query: "Suria KLCC Kuala Lumpur", openHour: 10, closeHour: 22 },
-  { name: "Pavilion Kuala Lumpur", total: 500, query: "Pavilion KL Kuala Lumpur", openHour: 10, closeHour: 22 },
-  { name: "Mid Valley Megamall", total: 600, query: "Mid Valley Megamall Kuala Lumpur", openHour: 10, closeHour: 22 },
-  { name: "Sunway Velocity Mall", total: 400, query: "Sunway Velocity Mall Kuala Lumpur", openHour: 10, closeHour: 22 },
-  { name: "1 Utama Shopping Centre", total: 700, query: "1 Utama Shopping Centre", openHour: 10, closeHour: 22 },
-  { name: "Sunway Pyramid", total: 650, query: "Sunway Pyramid Mall", openHour: 10, closeHour: 22 },
-  { name: "The Exchange TRX", total: 700, query: "The Exchange TRX Kuala Lumpur", openHour: 10, closeHour: 22 },
-  { name: "The Gardens Mall", total: 450, query: "The Gardens Mall Kuala Lumpur", openHour: 10, closeHour: 22 },
-  { name: "NU Sentral", total: 350, query: "NU Sentral Kuala Lumpur", openHour: 10, closeHour: 22 },
-  { name: "Berjaya Times Square", total: 550, query: "Berjaya Times Square Kuala Lumpur", openHour: 10, closeHour: 22 },
-  { name: "Lot 10 Bukit Bintang", total: 500, query: "Lot 10 Bukit Bintang Kuala Lumpur", openHour: 10, closeHour: 22 },
-  { name: "IOI City Mall Putrajaya", total: 600, query: "IOI City Mall Putrajaya", openHour: 10, closeHour: 22 },
-  { name: "Mitsui Lalaport BBCC", total: 550, query: "LaLaport BBCC Kuala Lumpur", openHour: 10, closeHour: 22 },
-  { name: "Avenue K", total: 350, query: "Avenue K Kuala Lumpur", openHour: 10, closeHour: 22 },
-  { name: "Pavilion Bukit Jalil", total: 600, query: "Pavilion Bukit Jalil", openHour: 10, closeHour: 22 },
-  { name: "Pavilion Damansara Heights", total: 500, query: "Pavilion Damansara Heights", openHour: 10, closeHour: 22 },
-  { name: "KL Gateway Mall", total: 350, query: "KL Gateway Mall Kuala Lumpur", openHour: 10, closeHour: 22 },
-  { name: "Sunway Putra Mall", total: 500, query: "Sunway Putra Mall Kuala Lumpur", openHour: 10, closeHour: 22 },
-  { name: "MyTOWN Shopping Centre", total: 500, query: "MyTOWN Shopping Centre Kuala Lumpur", openHour: 10, closeHour: 22 },
-  { name: "The Curve Mutiara Damansara", total: 400, query: "The Curve Mutiara Damansara", openHour: 10, closeHour: 22 },
-  { name: "IPC Shopping Centre", total: 450, query: "IPC Shopping Centre Mutiara Damansara", openHour: 10, closeHour: 22 },
-  { name: "Wangsa Walk Mall", total: 350, query: "Wangsa Walk Mall Kuala Lumpur", openHour: 10, closeHour: 22 },
-  { name: "Quill City Mall", total: 450, query: "Quill City Mall Kuala Lumpur", openHour: 10, closeHour: 22 },
-  { name: "Fahrenheit88", total: 350, query: "Fahrenheit88 Bukit Bintang Kuala Lumpur", openHour: 10, closeHour: 22 },
-  { name: "The Starhill", total: 300, query: "The Starhill Bukit Bintang Kuala Lumpur", openHour: 10, closeHour: 22 }
+  { name: "Suria KLCC", total: 5500, query: "Suria KLCC Kuala Lumpur", openHour: 10, closeHour: 22, hasLiveFeed: false },
+  { name: "Pavilion Kuala Lumpur", total: 4000, query: "Pavilion KL Kuala Lumpur", openHour: 10, closeHour: 22, hasLiveFeed: false },
+  { name: "Mid Valley Megamall", total: 9000, query: "Mid Valley Megamall Kuala Lumpur", openHour: 10, closeHour: 22, hasLiveFeed: false },
+  { name: "Sunway Velocity Mall", total: 2800, query: "Sunway Velocity Mall Kuala Lumpur", openHour: 10, closeHour: 22, hasLiveFeed: false },
+  { name: "1 Utama Shopping Centre", total: 13000, query: "1 Utama Shopping Centre", openHour: 10, closeHour: 22, hasLiveFeed: false },
+  { name: "Sunway Pyramid", total: 10000, query: "Sunway Pyramid Mall", openHour: 10, closeHour: 22, hasLiveFeed: false },
+  { name: "The Exchange TRX", total: 4800, query: "The Exchange TRX Kuala Lumpur", openHour: 10, closeHour: 22, hasLiveFeed: false },
+  { name: "The Gardens Mall", total: 9000, query: "The Gardens Mall Kuala Lumpur", openHour: 10, closeHour: 22, hasLiveFeed: false },
+  { name: "NU Sentral", total: 2000, query: "NU Sentral Kuala Lumpur", openHour: 10, closeHour: 22, hasLiveFeed: false },
+  { name: "Berjaya Times Square", total: 7000, query: "Berjaya Times Square Kuala Lumpur", openHour: 10, closeHour: 22, hasLiveFeed: false },
+  { name: "Lot 10 Bukit Bintang", total: 1200, query: "Lot 10 Bukit Bintang Kuala Lumpur", openHour: 10, closeHour: 22, hasLiveFeed: false },
+  { name: "IOI City Mall Putrajaya", total: 16600, query: "IOI City Mall Putrajaya", openHour: 10, closeHour: 22, hasLiveFeed: false },
+  { name: "Mitsui Lalaport BBCC", total: 3800, query: "LaLaport BBCC Kuala Lumpur", openHour: 10, closeHour: 22, hasLiveFeed: false },
+  { name: "Avenue K", total: 1200, query: "Avenue K Kuala Lumpur", openHour: 10, closeHour: 22, hasLiveFeed: false },
+  { name: "Pavilion Bukit Jalil", total: 6500, query: "Pavilion Bukit Jalil", openHour: 10, closeHour: 22, hasLiveFeed: false },
+  { name: "Pavilion Damansara Heights", total: 2500, query: "Pavilion Damansara Heights", openHour: 10, closeHour: 22, hasLiveFeed: false },
+  { name: "KL Gateway Mall", total: 1500, query: "KL Gateway Mall Kuala Lumpur", openHour: 10, closeHour: 22, hasLiveFeed: false },
+  { name: "Sunway Putra Mall", total: 2500, query: "Sunway Putra Mall Kuala Lumpur", openHour: 10, closeHour: 22, hasLiveFeed: false },
+  { name: "MyTOWN Shopping Centre", total: 6500, query: "MyTOWN Shopping Centre Kuala Lumpur", openHour: 10, closeHour: 22, hasLiveFeed: false },
+  { name: "The Curve Mutiara Damansara", total: 3000, query: "The Curve Mutiara Damansara", openHour: 10, closeHour: 22, hasLiveFeed: false },
+  { name: "IPC Shopping Centre", total: 3500, query: "IPC Shopping Centre Mutiara Damansara", openHour: 10, closeHour: 22, hasLiveFeed: false },
+  { name: "Wangsa Walk Mall", total: 2200, query: "Wangsa Walk Mall Kuala Lumpur", openHour: 10, closeHour: 22, hasLiveFeed: false },
+  { name: "Quill City Mall", total: 2800, query: "Quill City Mall Kuala Lumpur", openHour: 10, closeHour: 22, hasLiveFeed: false },
+  { name: "Fahrenheit88", total: 1000, query: "Fahrenheit88 Bukit Bintang Kuala Lumpur", openHour: 10, closeHour: 22, hasLiveFeed: false },
+  { name: "The Starhill", total: 800, query: "The Starhill Bukit Bintang Kuala Lumpur", openHour: 10, closeHour: 22, hasLiveFeed: false }
 ];
 
 function formatHour12(h) {
@@ -381,16 +380,17 @@ function renderMalls(mallList, klHours) {
       <div class="p-6">
         <div class="flex items-start justify-between gap-3 mb-4">
           <h3 class="font-black text-lg text-gray-900 leading-tight">${mall.name}</h3>
-          <span class="${level.bg} ${level.text} px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">
-            ${level.label}
+          <span class="bg-slate-200 text-slate-600 px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">
+            ${mall.total} bays
           </span>
         </div>
         <div class="flex items-end gap-2 mb-4">
-          <span class="text-4xl font-black ${level.num}">${mall.available}</span>
-          <span class="text-gray-500 mb-1 text-sm">/ ${mall.total} spots</span>
+          <span class="text-3xl font-black text-slate-700">${mall.available > 0 ? mall.available : mall.total}</span>
+          <span class="text-gray-500 mb-1 text-sm">total bays</span>
         </div>
-        <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-          <div class="h-full ${level.bar} rounded-full transition-all duration-700" style="width:${pct}%"></div>
+        <div class="flex items-center gap-2 mb-1">
+          <span class="w-2 h-2 rounded-full ${mall.hasLiveFeed ? 'bg-gray-400' : 'bg-gray-300'}"></span>
+          <span class="text-gray-400 text-xs">${mall.hasLiveFeed ? 'Feed unavailable — capacity only' : 'No live feed — capacity only'}</span>
         </div>
         <div class="mt-5 pt-4 border-t border-gray-200 space-y-3">
           <div class="hours-pill ${open ? 'open' : 'closed'} flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold">
@@ -401,10 +401,7 @@ function renderMalls(mallList, klHours) {
             <span class="flex-1">${open ? 'Open now' : 'Closed'} &middot; ${hoursLabel}</span>
           </div>
           <div class="flex items-center justify-between gap-2">
-            <p class="text-gray-400 text-xs flex items-center gap-1.5">
-              <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-              Live
-            </p>
+            <p class="text-gray-400 text-xs">Capacity info</p>
             <div class="flex gap-2">
               <a href="${mall.mapsUrl}" target="_blank" rel="noopener noreferrer"
                  title="Open in Google Maps"
@@ -441,25 +438,21 @@ function updateTimestamp() {
 }
 
 function updateTotalSpots() {
-  const total = malls.reduce((sum, m) => sum + m.available, 0);
+  const total = malls.reduce((sum, m) => sum + m.total, 0);
   const el = document.getElementById('total-spots');
   if (el) {
     el.textContent = total.toLocaleString();
-    el.classList.remove('flash-update');
-    void el.offsetWidth;
-    el.classList.add('flash-update');
   }
 }
 
 function updateStatusBanner(status) {
   const el = document.getElementById('status-text');
   if (!el) return;
-  el.textContent = status.label;
-  el.className = 'text-sm font-semibold ' + status.tone;
+  el.textContent = 'No public live feeds available — showing capacity only';
+  el.className = 'text-sm font-semibold text-amber-300';
 }
 
 function refreshData(triggeredManually) {
-  const status = recalculateAvailability();
   const klHours = getMalaysiaHours();
 
   const searchValue = document.getElementById('search-input').value.toLowerCase();
@@ -470,7 +463,7 @@ function refreshData(triggeredManually) {
   renderMalls(list, klHours);
   updateTimestamp();
   updateTotalSpots();
-  updateStatusBanner(status);
+  updateStatusBanner();
   generateAlerts();
 
   if (triggeredManually) {
@@ -499,44 +492,27 @@ function generateAlerts() {
   if (!feed) return;
   feed.innerHTML = '';
 
-  // Sort: critical (low) first, then medium, then high — within each group shuffle
-  const ranked = [...malls].map(m => ({
-    mall: m,
-    pct: m.available / m.total
-  })).sort((a, b) => {
-    const pa = a.pct < 0.25 ? 0 : a.pct < 0.5 ? 1 : 2;
-    const pb = b.pct < 0.25 ? 0 : b.pct < 0.5 ? 1 : 2;
-    if (pa !== pb) return pa - pb;
-    return Math.random() - 0.5;
-  }).slice(0, 8);
+  const klHours = getMalaysiaHours();
+  const mallsWithHours = malls.map(m => ({ mall: m, open: isOpenNow(m, klHours) }));
+  const openCount = mallsWithHours.filter(m => m.open).length;
+  const closedCount = mallsWithHours.length - openCount;
 
-  ranked.forEach((entry, idx) => {
-    const m = entry.mall;
-    const pct = entry.pct;
-    let icon, msg, borderColor;
-    if (pct < 0.25) {
-      icon = '🔴';
-      msg = `${m.name} is almost full &mdash; only ${m.available} spots left.`;
-      borderColor = 'border-l-red-500 bg-red-50';
-    } else if (pct < 0.5) {
-      icon = '🟡';
-      msg = `${m.name} is filling up &mdash; ${m.available} spots remaining.`;
-      borderColor = 'border-l-yellow-500 bg-yellow-50';
-    } else {
-      icon = '🟢';
-      msg = `${m.name} has plenty of parking &mdash; ${m.available} spots open.`;
-      borderColor = 'border-l-green-500 bg-green-50';
-    }
-    const timeAgo = Math.floor(Math.random() * 5) + 1;
+  const alerts = [
+    { icon: 'ℹ️', msg: `No public live parking feeds are currently available from any KL mall. Showing parking bay capacity only.`, color: 'border-l-blue-500 bg-blue-50' },
+    { icon: '🏢', msg: `${openCount} mall${openCount !== 1 ? 's' : ''} currently open, ${closedCount} closed (based on standard 10am–10pm hours).`, color: 'border-l-slate-500 bg-slate-50' },
+    { icon: '🅿️', msg: `Total parking capacity across all 25 malls: ${malls.reduce((s,m)=>s+m.total,0).toLocaleString()} bays.`, color: 'border-l-green-500 bg-green-50' },
+    { icon: '📡', msg: `When official APIs become available, this page will display real-time occupancy data.`, color: 'border-l-purple-500 bg-purple-50' },
+  ];
+
+  alerts.forEach((alert, idx) => {
     const div = document.createElement('div');
-    div.className = `border-l-4 ${borderColor} rounded-xl p-4 flex items-start gap-3 animate-fade-in`;
+    div.className = `border-l-4 ${alert.color} rounded-xl p-4 flex items-start gap-3 animate-fade-in`;
     div.style.animationDelay = `${idx * 0.08}s`;
     div.style.opacity = '0';
     div.innerHTML = `
-      <span class="text-2xl">${icon}</span>
+      <span class="text-2xl">${alert.icon}</span>
       <div class="flex-1">
-        <p class="text-gray-800 font-medium text-sm">${msg}</p>
-        <p class="text-gray-400 text-xs mt-1">${timeAgo} min ago</p>
+        <p class="text-gray-800 font-medium text-sm">${alert.msg}</p>
       </div>
     `;
     feed.appendChild(div);
